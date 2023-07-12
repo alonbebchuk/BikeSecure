@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SDSApplication.CurrentParkingsPage"
+             Title="CurrentParkingsPage">
+    <VerticalStackLayout>
+        <Label
+            Text="Current Parkings" 
+            FontSize="24" 
+            FontAttributes="Bold" 
+            HorizontalOptions="Center" 
+            Margin="0,0,0,20" />
+        
+        <TableView Intent="Data">
+            <TableRoot>
+                <TableSection Title="Lock Id/Start Time">
+                    <TextCell Text="0000000000000001"
+                      Detail="05:34:00" />
+                    <TextCell Text="0000000000000002"
+                      Detail="07:32:10" />
+                </TableSection>
+            </TableRoot>
+        </TableView>
+    </VerticalStackLayout>
+</ContentPage>

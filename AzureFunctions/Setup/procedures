@@ -1,0 +1,59 @@
+DROP PROCEDURE IF EXISTS InsertUserIfNotExists
+DROP PROCEDURE IF EXISTS LoadUserBalance
+DROP PROCEDURE IF EXISTS TryChangeLockState
+DROP PROCEDURE IF EXISTS TryStartParkingProcess
+DROP PROCEDURE IF EXISTS TryStopParkingProcess
+
+CREATE PROCEDURE InsertUserIfNotExists @user_id UNIQUEIDENTIFIER
+AS
+IF NOT EXISTS (SELECT * FROM Users WHERE id = @user_id)
+    INSERT INTO Users (id) VALUES (@user_id)
+
+CREATE PROCEDURE LoadUserBalance @user_id UNIQUEIDENTIFIER, @amount SMALLMONEY
+AS
+BEGIN
+    INSERT INTO Transactions (user_id, date_time, amount) VALUES (@user_id, GETDATE(), @amount)
+    UPDATE Users SET balance += @amount WHERE id = @user_id
+END
+
+CREATE PROCEDURE TryChangeLockState @user_id UNIQUEIDENTIFIER, @lock_id UNIQUEIDENTIFIER, @state VARCHAR(10), @success BIT OUTPUT
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM Locks WHERE id = @lock_id AND owner_id = @user_id AND state != @state)
+    BEGIN
+        UPDATE Locks SET state = @state WHERE id = @lock_id
+        SET @success = CAST(1 AS BIT)
+    END
+    ELSE
+        SET @success = CAST(0 AS BIT)
+END
+
+CREATE PROCEDURE TryStartParkingProcess @user_id UNIQUEIDENTIFIER, @lock_id UNIQUEIDENTIFIER, @parking_process_id INT OUTPUT
+AS
+BEGIN
+    IF EXISTS (SELECT * FROM Locks WHERE id = @lock_id AND owner_id IS NULL AND state = 'Unlocked') AND EXISTS (SELECT * FROM Users WHERE id = @user_id AND balance > 0)
+    BEGIN
+        UPDATE Locks SET owner_id = @user_id WHERE id = @lock_id
+        INSERT INTO ParkingProcesses (user_id, lock_id, start_time) VALUES (@user_id, @lock_id, GETDATE())
+        SET @parking_process_id = CAST(SCOPE_IDENTITY() AS INT)
+    END
+    ELSE
+        SET @parking_process_id = -1
+END
+
+CREATE PROCEDURE TryStopParkingProcess @user_id UNIQUEIDENTIFIER, @parking_process_id INT, @rate SMALLMONEY, @success BIT OUTPUT
+AS
+BEGIN
+    DECLARE @lock_id UNIQUEIDENTIFIER
+    SET @lock_id = (SELECT lock_id FROM ParkingProcesses WHERE id = @parking_process_id AND user_id = @user_id AND end_time IS NULL)
+    IF EXISTS (SELECT @lock_id) AND EXISTS (SELECT * FROM Locks WHERE id = @lock_id AND owner_id = @user_id AND state = 'Unlocked')
+    BEGIN
+        DECLARE @cost SMALLMONEY
+        UPDATE Locks SET owner_id = NULL WHERE id = @lock_id
+        UPDATE ParkingProcesses SET end_time = GETDATE(), duration = DATEDIFF(minute, start_time, end_time), @cost = cost = duration * @rate WHERE id = @parking_process_id
+        UPDATE Users SET balance -= @cost WHERE id = @user_id
+        SET @success = CAST(1 AS BIT)
+    END
+    ELSE
+        SET @success = CAST(0 AS BIT)
+END
