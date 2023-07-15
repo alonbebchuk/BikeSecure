@@ -15,7 +15,7 @@ namespace SDSApplication
         public ParkingsHistoryPage()
         {
             InitializeComponent();
-            LoadUserParkingHistory();
+            //LoadUserParkingHistory();
         }
 
         private async void LoadUserParkingHistory()
