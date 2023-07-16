@@ -2,21 +2,45 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SDSApplication.MainPage">
+             x:Class="SDSApplication.MainPage"
+             BackgroundColor="AliceBlue">
 
     <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
 
         <!-- Title -->
-        <Label Text="Smart Docking Station" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" />
+        <Label Text="Smart Docking Station" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" TextColor="IndianRed" />
 
         <!-- Icon -->
         <Image Source="lock_bicycles_icon.png" HeightRequest="100" WidthRequest="100" HorizontalOptions="Center" Margin="0,0,0,20" />
 
-        <!-- Scan Buttons -->
+        <!-- Scan Button -->
         <Button 
             x:Name="scanBtn"
             Text="Scan Lock" 
+            TextColor="Black"
             Clicked="Scan_Lock_Clicked" 
-            Margin="0,0,0,10" />
+            Margin="0,0,0,10" 
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+
+        <!-- Barcode Button -->
+        <Button 
+            x:Name="scanBarcodeBtn"
+            Text="Scan Barcode"
+            TextColor="Black"
+            Clicked="Scan_Barcode_Clicked" 
+            Margin="0,0,0,10"  
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+
+        <!-- Map Button -->
+        <Button 
+            x:Name="MapBtn"
+            Text="Map View" 
+            TextColor="Black"
+            Clicked="Map_Clicked" 
+            Margin="0,0,0,10" 
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
     </StackLayout>
 </ContentPage>

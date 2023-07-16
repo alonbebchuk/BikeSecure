@@ -1,1 +1,0 @@
-Open project with Arduino IDE

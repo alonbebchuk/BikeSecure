@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SDSApplication.Views.MainView"
+             Title="Login Screen">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+
+    <Grid>
+        <Image Source="custom_login.png" Aspect="AspectFill" />
+
+        <StackLayout VerticalOptions="Start" Margin="0,170,0,0">
+            <ScrollView Margin="30,0">
+                <VerticalStackLayout Spacing="25">
+                    <Button 
+                        x:Name="SignInButton"
+                        Text="Sign In"
+                        SemanticProperties.Hint="Sign In"
+                        Clicked="OnSignInClicked"
+                        BackgroundColor="#0077C5"
+                        TextColor="White"
+                        FontSize="24"
+                        HeightRequest="60"
+                        HorizontalOptions="Center"
+                        IsEnabled="False"/>
+                </VerticalStackLayout>
+            </ScrollView>
+        </StackLayout>
+    </Grid>
+</ContentPage>
+
+
