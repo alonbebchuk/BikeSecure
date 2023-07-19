@@ -8,7 +8,6 @@ public partial class StopParkingPage : ContentPage
     private static readonly HttpClient client = new HttpClient();
     private readonly string apiBaseUrl = "https://sdsbasicfunctions.azurewebsites.net"; // Update with your Azure Function base URL
     private readonly Guid lockId = new Guid("22222222-2222-2222-2222-222222222222");
-    private readonly Guid userId = new Guid("11111111-1111-1111-1111-111111111111");
     private Guid processId;
     public StopParkingPage()
 	{
@@ -17,12 +16,12 @@ public partial class StopParkingPage : ContentPage
 
     private async void StopParkingButton_Clicked(object sender, EventArgs e)
     {
-        var url = apiBaseUrl + "/api/TryStopParkingProcess";
+        var url = apiBaseUrl + "/api/ReleaseLockOwnership";
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Get,
             RequestUri = new Uri(url),
-            Content = JsonContent.Create(new { id = userId, lock_id = lockId }),
+            Content = JsonContent.Create(new { id = lockId }),
         };
         var response = await client.SendAsync(request).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
@@ -51,8 +50,8 @@ public partial class StopParkingPage : ContentPage
 
     private async void changeLockState(string state)
     {
-        var url = apiBaseUrl + "/api/TryChangeLockState/" + state;
-        var content = JsonContent.Create(new { id = userId, lock_id = lockId });
+        var url = apiBaseUrl + "/api/ChangeLockState/" + state;
+        var content = JsonContent.Create(new { id = lockId });
         var response = await client.PostAsync(url, content);
         var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         //processId = JsonConvert.DeserializeObject<Guid>(responseBody);

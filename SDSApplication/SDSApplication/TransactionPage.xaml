@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SDSApplication.CurrentParkingsPage"
-             Title="CurrentParkingsPage">
+             x:Class="SDSApplication.TransactionPage"
+             Title="TransactionPage">
     <VerticalStackLayout>
         <Label
-            Text="Current Parkings" 
+            Text="Transactions" 
             FontSize="24" 
             FontAttributes="Bold" 
             HorizontalOptions="Center" 
             Margin="0,0,0,20" />
 
-        <ListView x:Name="listCurrentParkings">
+        <ListView x:Name="listUserTransactions">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10">
-                            <Label Text="{Binding lockId}" />
-                            <Label Text="{Binding startTime}" />
-                            <Label Text="{Binding duration}" />
+                            <Label Text="{Binding id}" />
+                            <Label Text="{Binding dateTime}" />
+                            <Label Text="{Binding amount}" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

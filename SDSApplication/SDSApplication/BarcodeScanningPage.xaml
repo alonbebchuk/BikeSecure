@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:gv="clr-namespace:BarcodeScanner.Mobile;assembly=BarcodeScanner.Mobile.Maui"
+             x:Class="SDSApplication.BarcodeScanningPage"
+             Title="BarcodeScanningPage"
+             BackgroundColor="#242F3E">
+    <ScrollView>
+        <StackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Label Text="For scanning a lock to start parking, you need to scan the lock`s QR code!"
+                   HorizontalTextAlignment="Center" 
+                   TextColor="White" 
+                   FontSize="18"/>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Image Source="qr_code.png" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center" Margin="0,0,0,20" BackgroundColor="White" />
+                <Label Text="the QR code looks like: " 
+                       TextColor="White" 
+                       FontSize="14"/>
+            </StackLayout>
+
+            <gv:CameraView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" OnDetected="Camera_OnDetected" 
+                           TorchOn="False" VibrationOnDetected="False" ScanInterval="100" x:Name="Camera" />
+            
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

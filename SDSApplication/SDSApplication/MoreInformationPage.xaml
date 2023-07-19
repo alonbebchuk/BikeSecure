@@ -13,9 +13,9 @@
 
         <!--Buttons -->
         <Button 
-            x:Name="BalanceBtn"
-            Text="Balance and Transaction" 
-            Clicked="BalanceAndTransactionClicked" 
+            x:Name="TransactionBtn"
+            Text="Transaction" 
+            Clicked="TransactionClicked" 
             Margin="0,0,0,10" />
         <Button 
             x:Name="currBtn"

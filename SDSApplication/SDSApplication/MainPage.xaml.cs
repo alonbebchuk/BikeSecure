@@ -14,5 +14,16 @@ public partial class MainPage : ContentPage
     {
         await Navigation.PushAsync(new StartParkingPage());
     }
+
+    private async void Scan_Barcode_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new BarcodeScanningPage());
+    }
+
+    private async void Map_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new MapPage());
+    }
+
 }
 
