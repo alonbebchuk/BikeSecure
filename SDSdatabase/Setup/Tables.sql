@@ -19,9 +19,10 @@ CREATE TABLE Managers (
 CREATE TABLE Stations (
   station_id INT IDENTITY (1, 1) PRIMARY KEY,
   manager_id UNIQUEIDENTIFIER NOT NULL,
+  station_name TEXT,
   hourly_rate DECIMAL(4,2) NOT NULL,
-  location_latitude DECIMAL NOT NULL,
-  location_longitude DECIMAL NOT NULL,
+  location_latitude DECIMAL(9,6) NOT NULL,
+  location_longitude DECIMAL(9,6) NOT NULL,
   FOREIGN KEY (manager_id) REFERENCES Managers(manager_id)
 );
 
