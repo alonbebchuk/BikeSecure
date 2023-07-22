@@ -29,12 +29,7 @@ public partial class MainPage : ContentPage
     {
         await Navigation.PushAsync(new Views.MapPage(mapViewModel));
     }
-
-    private async void More_Information_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new MoreInformationPage());
-    }
-    private async void SignOutButton_Clicked(object sender, EventArgs e)
+    private async void LogOutButton_Clicked(object sender, EventArgs e)
     {
         await PublicClientSingleton.Instance.SignOutAsync().ContinueWith((t) =>
         {
@@ -42,6 +37,16 @@ public partial class MainPage : ContentPage
         });
 
         await Shell.Current.GoToAsync("mainview");
+    }
+
+    private async void CurrentParkingsClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new CurrentParkingsPage());
+    }
+
+    private async void ParkingHistoryClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ParkingsHistoryPage());
     }
 
 }

@@ -43,23 +43,32 @@
             BorderWidth ="2"
             BorderColor="PaleVioletRed"/>
 
-        <!-- More Information Button -->
         <Button 
-            x:Name="MoreInformationBtn"
-            Text="More Information" 
+            x:Name="currBtn"
+            Text="Current Parkings" 
             TextColor="Black"
-            Clicked="More_Information_Clicked" 
+            Clicked="CurrentParkingsClicked" 
             Margin="0,0,0,10" 
             BorderWidth ="2"
             BorderColor="PaleVioletRed"/>
         
-        <Button
-            x:Name="SignOutButton"
-            Text="Sign Out"
+        <Button 
+            x:Name="histBtn"
+            Text="Parking History" 
             TextColor="Black"
-            Clicked="SignOutButton_Clicked" 
+            Clicked="ParkingHistoryClicked" 
+            Margin="0,0,0,10" 
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+
+        <Button
+            x:Name="LogOutButton"
+            Text="Log Out"
+            TextColor="Black"
+            Clicked="LogOutButton_Clicked" 
             Margin="0,0,0,10"
             BorderWidth ="2"
             BorderColor="PaleVioletRed"/>
+
     </StackLayout>
 </ContentPage>
