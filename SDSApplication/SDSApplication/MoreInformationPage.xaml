@@ -23,9 +23,9 @@
             BorderColor="PaleVioletRed"/>
         <Button 
             x:Name="currBtn"
-            Text="Current Parking History" 
+            Text="Current Parkings" 
             TextColor="Black"
-            Clicked="CurrentParkingHistoryClicked" 
+            Clicked="CurrentParkingsClicked" 
             Margin="0,0,0,10" 
             BorderWidth ="2"
             BorderColor="PaleVioletRed"/>
