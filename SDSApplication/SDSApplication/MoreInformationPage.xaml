@@ -14,10 +14,10 @@
 
         <!--Buttons -->
         <Button 
-            x:Name="BalanceBtn"
-            Text="Balance and Transaction" 
+            x:Name="TransactionsBtn"
+            Text="Transactions" 
             TextColor="Black"
-            Clicked="BalanceAndTransactionClicked" 
+            Clicked="TransactionClicked" 
             Margin="0,0,0,10" 
             BorderWidth ="2"
             BorderColor="PaleVioletRed"/>
