@@ -22,7 +22,7 @@ namespace SDSApplication.Views
                 }
                 else
                 {
-                    await Shell.Current.GoToAsync("scopeview");
+                    await Shell.Current.GoToAsync("mainpageview");
                 }
             });
         }
@@ -30,7 +30,7 @@ namespace SDSApplication.Views
         private async void OnSignInClicked(object sender, EventArgs e)
         {
             await PublicClientSingleton.Instance.AcquireTokenSilentAsync();
-            await Shell.Current.GoToAsync("scopeview");
+            await Shell.Current.GoToAsync("mainpageview");
         }
         protected override bool OnBackButtonPressed() { return true; }
 

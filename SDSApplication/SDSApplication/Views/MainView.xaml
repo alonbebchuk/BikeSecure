@@ -10,7 +10,7 @@
     <Grid>
         <Image Source="custom_login.png" Aspect="AspectFill" />
 
-        <StackLayout VerticalOptions="Start" Margin="0,170,0,0">
+        <StackLayout VerticalOptions="Start" Margin="0,120,0,0">
             <ScrollView Margin="30,0">
                 <VerticalStackLayout Spacing="25">
                     <Button 

@@ -2,11 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SDSApplication.MoreInformationPage"
-             Title="MoreInformationPage">
+             Title="MoreInformationPage"
+             BackgroundColor="AliceBlue">
     <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
 
         <!-- Title -->
-        <Label Text="More Information" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" />
+        <Label Text="More Information" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" TextColor="IndianRed" />
 
         <!-- Icon -->
         <Image Source="lock_bicycles_icon.png" HeightRequest="100" WidthRequest="100" HorizontalOptions="Center" Margin="0,0,0,20" />
@@ -15,17 +16,27 @@
         <Button 
             x:Name="BalanceBtn"
             Text="Balance and Transaction" 
+            TextColor="Black"
             Clicked="BalanceAndTransactionClicked" 
-            Margin="0,0,0,10" />
+            Margin="0,0,0,10" 
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
         <Button 
             x:Name="currBtn"
             Text="Current Parking History" 
+            TextColor="Black"
             Clicked="CurrentParkingHistoryClicked" 
-            Margin="0,0,0,10" />
+            Margin="0,0,0,10" 
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
         <Button 
             x:Name="histBtn"
             Text="Parking History" 
+            TextColor="Black"
             Clicked="ParkingHistoryClicked" 
-            Margin="0,0,0,10" />
+            Margin="0,0,0,10" 
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+        
     </StackLayout>
 </ContentPage>

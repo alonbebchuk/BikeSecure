@@ -42,5 +42,24 @@
             Margin="0,0,0,10" 
             BorderWidth ="2"
             BorderColor="PaleVioletRed"/>
+
+        <!-- More Information Button -->
+        <Button 
+            x:Name="MoreInformationBtn"
+            Text="More Information" 
+            TextColor="Black"
+            Clicked="More_Information_Clicked" 
+            Margin="0,0,0,10" 
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+        
+        <Button
+            x:Name="SignOutButton"
+            Text="Sign Out"
+            TextColor="Black"
+            Clicked="SignOutButton_Clicked" 
+            Margin="0,0,0,10"
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
     </StackLayout>
 </ContentPage>
