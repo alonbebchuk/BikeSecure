@@ -14,14 +14,14 @@
         <Image Source="lock_bicycles_icon.png" HeightRequest="100" WidthRequest="100" HorizontalOptions="Center" Margin="0,0,0,20" />
 
         <!-- Scan Button -->
-        <Button 
+        <!--<Button 
             x:Name="scanBtn"
             Text="Scan Lock" 
             TextColor="Black"
             Clicked="Scan_Lock_Clicked" 
             Margin="0,0,0,10" 
             BorderWidth ="2"
-            BorderColor="PaleVioletRed"/>
+            BorderColor="PaleVioletRed"/>-->
 
         <!-- Barcode Button -->
         <Button 
