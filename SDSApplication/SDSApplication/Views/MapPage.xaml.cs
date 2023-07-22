@@ -1,10 +1,9 @@
+// .NET MAUI Maps: A First Look - Pins, Polygons and more! : https://www.youtube.com/watch?v=pjPou4xKrQo&t=720s
+
 using SDSApplication.Control;
 using SDSApplication.ViewModel;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
-using System.Linq;
-
-using System.Net.NetworkInformation;
 
 
 namespace SDSApplication.Views
