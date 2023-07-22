@@ -1,3 +1,5 @@
+// Barcode Scanning with Google Vision and ML Kit in .NET MAUI : https://www.youtube.com/watch?v=WWP2t-B5ADU&list=PLfbOp004UaYWu-meDkRN6_Y1verl96npI&index=10
+
 using BarcodeScanner.Mobile;
 
 namespace SDSApplication;
