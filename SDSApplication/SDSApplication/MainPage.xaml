@@ -7,23 +7,10 @@
 
     <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
 
-        <!-- Title -->
         <Label Text="Smart Docking Station" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" TextColor="IndianRed" />
 
-        <!-- Icon -->
         <Image Source="lock_bicycles_icon.png" HeightRequest="100" WidthRequest="100" HorizontalOptions="Center" Margin="0,0,0,20" />
-
-        <!-- Scan Button -->
-        <Button 
-            x:Name="scanBtn"
-            Text="Scan Lock" 
-            TextColor="Black"
-            Clicked="Scan_Lock_Clicked" 
-            Margin="0,0,0,10" 
-            BorderWidth ="2"
-            BorderColor="PaleVioletRed"/>
-
-        <!-- Barcode Button -->
+        
         <Button 
             x:Name="scanBarcodeBtn"
             Text="Scan Barcode"
@@ -33,7 +20,6 @@
             BorderWidth ="2"
             BorderColor="PaleVioletRed"/>
 
-        <!-- Map Button -->
         <Button 
             x:Name="MapBtn"
             Text="Map View" 
@@ -42,5 +28,42 @@
             Margin="0,0,0,10" 
             BorderWidth ="2"
             BorderColor="PaleVioletRed"/>
+
+        <Button 
+            x:Name="currBtn"
+            Text="Current Parkings" 
+            TextColor="Black"
+            Clicked="CurrentParkingsClicked" 
+            Margin="0,0,0,10" 
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+        
+        <Button 
+            x:Name="histBtn"
+            Text="Parking History" 
+            TextColor="Black"
+            Clicked="ParkingHistoryClicked" 
+            Margin="0,0,0,10" 
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+
+        <Button
+            x:Name="LogOutButton"
+            Text="Log Out"
+            TextColor="Black"
+            Clicked="LogOutButton_Clicked" 
+            Margin="0,0,0,10"
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+
+        <Button
+            x:Name="ExitApplicationButton"
+            Text="Exit Application"
+            TextColor="Black"
+            Clicked="ExitApplicationButton_Clicked" 
+            Margin="0,0,0,10"
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+
     </StackLayout>
 </ContentPage>

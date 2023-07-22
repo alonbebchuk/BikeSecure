@@ -1,4 +1,6 @@
-﻿namespace SDSApplication;
+﻿using Microsoft.Maui.Controls.PlatformConfiguration;
+
+namespace SDSApplication;
 
 public partial class App : Application
 {

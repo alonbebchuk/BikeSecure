@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:location="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodel="clr-namespace:SDSApplication.ViewModel"
+             xmlns:control="clr-namespace:SDSApplication.Control"
+             x:Class="SDSApplication.Views.MapPage"
+             x:DataType="viewmodel:MapViewModel">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <maps:Map 
+            x:Name="mappy"
+            MapType="Street"
+            IsEnabled="False"
+            IsTrafficEnabled="False"
+            IsShowingUser="True"
+            HeightRequest="400"
+            Grid.Row="0"
+            ItemsSource="{Binding CustomPins}"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <maps:Map.ItemTemplate>
+                <DataTemplate x:DataType="control:CustomPin">
+                    <control:CustomPin 
+                        MarkerClicked="OnMarkerClicked"
+                        Location="{Binding Location}"
+                        Label="{Binding Label}"
+                        Type="{Binding Type}"
+                        ImageSource="{Binding ImageSource}" />
+                </DataTemplate>
+            </maps:Map.ItemTemplate>
+        </maps:Map>
+
+        <ScrollView Grid.Row="1">
+            <ListView x:Name="pinList" BackgroundColor="White" ItemTapped="ListViewItemTapped" ItemsSource="{Binding CustomPins}" RowHeight="70" VerticalOptions="FillAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="control:CustomPin">
+                        <ViewCell>
+                            <StackLayout Padding="10" VerticalOptions="StartAndExpand" HorizontalOptions="Start">
+                                <Label Text="{Binding Label}"
+                            FontAttributes="Bold"
+                            FontSize="12"
+                            TextColor="Black"
+                            LineBreakMode="WordWrap" />
+                                <Label Text="{Binding Address}"
+                            FontSize="12"
+                            TextColor="Gray"
+                            LineBreakMode="WordWrap" />
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Distance: " FontSize="12" TextColor="Gray"/>
+                                            <Span Text="{Binding Distance, StringFormat='{0:F2} km'}" FontSize="12" TextColor="grey" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollView>
+    </Grid>
+</ContentPage>

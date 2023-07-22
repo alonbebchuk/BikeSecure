@@ -1,3 +1,5 @@
+// Barcode Scanning with Google Vision and ML Kit in .NET MAUI : https://www.youtube.com/watch?v=WWP2t-B5ADU&list=PLfbOp004UaYWu-meDkRN6_Y1verl96npI&index=10
+
 using BarcodeScanner.Mobile;
 
 namespace SDSApplication;
@@ -7,9 +9,7 @@ public partial class BarcodeScanningPage : ContentPage
 	public BarcodeScanningPage()
 	{
 		InitializeComponent();
-#if (ANDROID || IOS)
         BarcodeScanner.Mobile.Methods.AskForRequiredPermission();
-#endif
     }
 
     private void Camera_OnDetected(object sender, BarcodeScanner.Mobile.OnDetectedEventArg e)

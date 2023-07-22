@@ -11,7 +11,7 @@
             HorizontalOptions="Center" 
             Margin="0,0,0,20" />
 
-        <ListView x:Name="listCurrentParkings">
+        <ListView x:Name="listCurrentParkings" RowHeight="150" VerticalOptions="FillAndExpand">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
