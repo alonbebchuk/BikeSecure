@@ -4,6 +4,7 @@ using SDSApplication.Control;
 using SDSApplication.ViewModel;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
+using Android.App.AppSearch;
 
 
 namespace SDSApplication.Views
@@ -118,5 +119,57 @@ namespace SDSApplication.Views
         {
             e.HideInfoWindow = true;
         }
+
+        // Search-Bar functions : https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/searchbar
+        private void OnSearchButtonPressed(object sender, EventArgs e)
+        {
+            var searchTerm = searchBar.Text;
+            var matchedPin = pins.FirstOrDefault(pin => pin.Label.ToLower().Contains(searchTerm.ToLower()));
+
+            if (matchedPin != null)
+            {
+                mappy.MoveToRegion(MapSpan.FromCenterAndRadius(matchedPin.Location, Distance.FromKilometers(0.5)));
+            }
+            else
+            {
+                DisplayAlert("Docking Station is Not Found", "No matching docking station found.", "OK");
+            }
+        }
+
+        private void OnTextChanged(object sender, EventArgs e)
+        {
+            SearchBar searchBar = (SearchBar)sender;
+            string searchTerm = searchBar.Text.ToLower();
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                searchResults.ItemsSource = null;
+            }
+            else
+            {
+                var matchedPins = pins.Where(pin => pin.Label.ToLower().StartsWith(searchTerm)).ToList();
+                var matchedPinsLabels = new List<string>();
+                foreach (var pin in matchedPins)
+                {
+                    matchedPinsLabels.Add(pin.Label.ToLower());
+                }
+                searchResults.ItemsSource = matchedPinsLabels;
+            }
+        }
+
+        private void OnSearchResultItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item is string searchText)
+            {
+                searchBar.Text = searchText;
+                OnSearchButtonPressed(sender, e);
+            }
+
+            if (sender is ListView listView)
+            {
+                listView.SelectedItem = null;
+            }
+        }
+
     }
 }

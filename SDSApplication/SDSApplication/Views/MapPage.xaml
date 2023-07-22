@@ -7,13 +7,20 @@
              xmlns:viewmodel="clr-namespace:SDSApplication.ViewModel"
              xmlns:control="clr-namespace:SDSApplication.Control"
              x:Class="SDSApplication.Views.MapPage"
-             x:DataType="viewmodel:MapViewModel">
+             x:DataType="viewmodel:MapViewModel"
+             BackgroundColor="white">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <SearchBar x:Name="searchBar" IsTextPredictionEnabled ="True" Placeholder="Search docking stations name" BackgroundColor="LightGrey" TextChanged="OnTextChanged" SearchButtonPressed="OnSearchButtonPressed" Grid.Row="0" />
+
+        <ListView x:Name="searchResults" BackgroundColor="LightGrey" ItemTapped="OnSearchResultItemTapped" Grid.Row="1" />
 
         <maps:Map 
             x:Name="mappy"
@@ -22,7 +29,7 @@
             IsTrafficEnabled="False"
             IsShowingUser="True"
             HeightRequest="400"
-            Grid.Row="0"
+            Grid.Row="2"
             ItemsSource="{Binding CustomPins}"
             AbsoluteLayout.LayoutFlags="All"
             AbsoluteLayout.LayoutBounds="0,0,1,1">
@@ -38,7 +45,7 @@
             </maps:Map.ItemTemplate>
         </maps:Map>
 
-        <ScrollView Grid.Row="1">
+        <ScrollView Grid.Row="3">
             <ListView x:Name="pinList" BackgroundColor="White" ItemTapped="ListViewItemTapped" ItemsSource="{Binding CustomPins}" RowHeight="70" VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="control:CustomPin">
