@@ -21,6 +21,15 @@
             BorderColor="PaleVioletRed"/>
 
         <Button 
+            x:Name="scanBluetoothBtn"
+            Text="Scan Bluetooth"
+            TextColor="Black"
+            Clicked="Scan_Bluetooth_Clicked" 
+            Margin="0,0,0,10"  
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+
+        <Button 
             x:Name="MapBtn"
             Text="Map View" 
             TextColor="Black"

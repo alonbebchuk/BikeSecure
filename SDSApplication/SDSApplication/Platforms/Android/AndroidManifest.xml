@@ -19,6 +19,10 @@
 		</activity>
 		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDHSGhO5hXxrCGpXb6i6P3oc479zns5Xt0" />
 	</application>
+
+	<!--Add this line to your manifest if you want to declare that your app is available to BLE-capable devices only:-->
+	<uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+	
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.VIBRATE" />
@@ -27,5 +31,12 @@
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+	<uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+	<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-sdk android:minSdkVersion="21" />
 </manifest>

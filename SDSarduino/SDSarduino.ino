@@ -6,15 +6,15 @@
 
 #include "Adafruit_BLE.h"
 #include "Adafruit_BluefruitLE_SPI.h"
-#include "BluefruitConfig.h"
+
 
 /* Create hardware SPI Bluefruit object */
-Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
+Adafruit_BluefruitLE_SPI ble(8, 7, 4);
 
 void broadcastState() {
   long stateCode;
   ble.readNVM(0, &stateCode);
-  ble.print("AT+BLEUARTTX="); ble.println(stateCode);
+  ble.print("AT+BLEUARTTXF="); ble.println(stateCode);
   ble.waitForOK();
 }
 

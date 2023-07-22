@@ -12,5 +12,10 @@
             ContentTemplate="{DataTemplate local:Views.MainView}"
             Route="MainPage" />
     </TabBar>
-
+    <FlyoutItem Title="Scan and select device" 
+                FlyoutIcon="{StaticResource IconBluetoothLE}">
+        <ShellContent ContentTemplate="{DataTemplate local:HomePage}"
+                      Route="HomePage" >
+        </ShellContent>
+    </FlyoutItem>
 </Shell>

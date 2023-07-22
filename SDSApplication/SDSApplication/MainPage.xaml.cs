@@ -1,6 +1,7 @@
 ﻿using AndroidX.Lifecycle;
 using SDSApplication.MSALClient;
 using SDSApplication.ViewModel;
+using SDSApplication.ViewModels;
 
 namespace SDSApplication;
 
@@ -23,6 +24,12 @@ public partial class MainPage : ContentPage
     private async void Scan_Barcode_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new BarcodeScanningPage());
+    }
+
+    private async void Scan_Bluetooth_Clicked(object sender, EventArgs e)
+    {
+        //await Navigation.PushAsync(new HomePage(homeViewModel));
+        await Shell.Current.GoToAsync("//HomePage", true);
     }
 
     private async void Map_Clicked(object sender, EventArgs e)
