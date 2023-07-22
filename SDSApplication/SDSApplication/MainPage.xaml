@@ -10,7 +10,7 @@
         <Label Text="Smart Docking Station" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,20" TextColor="IndianRed" />
 
         <Image Source="lock_bicycles_icon.png" HeightRequest="100" WidthRequest="100" HorizontalOptions="Center" Margin="0,0,0,20" />
-
+        
         <Button 
             x:Name="scanBarcodeBtn"
             Text="Scan Barcode"
@@ -52,6 +52,15 @@
             Text="Log Out"
             TextColor="Black"
             Clicked="LogOutButton_Clicked" 
+            Margin="0,0,0,10"
+            BorderWidth ="2"
+            BorderColor="PaleVioletRed"/>
+
+        <Button
+            x:Name="ExitApplicationButton"
+            Text="Exit Application"
+            TextColor="Black"
+            Clicked="ExitApplicationButton_Clicked" 
             Margin="0,0,0,10"
             BorderWidth ="2"
             BorderColor="PaleVioletRed"/>
