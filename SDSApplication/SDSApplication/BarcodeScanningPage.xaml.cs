@@ -7,9 +7,7 @@ public partial class BarcodeScanningPage : ContentPage
 	public BarcodeScanningPage()
 	{
 		InitializeComponent();
-#if (ANDROID || IOS)
         BarcodeScanner.Mobile.Methods.AskForRequiredPermission();
-#endif
     }
 
     private void Camera_OnDetected(object sender, BarcodeScanner.Mobile.OnDetectedEventArg e)
