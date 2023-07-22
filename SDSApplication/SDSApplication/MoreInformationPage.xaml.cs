@@ -7,9 +7,9 @@ public partial class MoreInformationPage : ContentPage
 		InitializeComponent();
 	}
 
-    private async void BalanceAndTransactionClicked(object sender, EventArgs e)
+    private async void TransactionClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new BalanceAndTransactionPage());
+        await Navigation.PushAsync(new TransactionPage());
     }
 
     private async void CurrentParkingHistoryClicked(object sender, EventArgs e)

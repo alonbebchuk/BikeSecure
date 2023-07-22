@@ -17,9 +17,9 @@ CREATE TABLE Managers (
 
 -- Station Table
 CREATE TABLE Stations (
-  station_id INT PRIMARY KEY,
+  station_id INT IDENTITY (1, 1) PRIMARY KEY,
   manager_id UNIQUEIDENTIFIER NOT NULL,
-  hourly_rate DECIMAL NOT NULL,
+  hourly_rate DECIMAL(4,2) NOT NULL,
   location_latitude DECIMAL NOT NULL,
   location_longitude DECIMAL NOT NULL,
   FOREIGN KEY (manager_id) REFERENCES Managers(manager_id)
@@ -27,7 +27,7 @@ CREATE TABLE Stations (
 
 -- Lock Table
 CREATE TABLE Locks (
-  lock_id INT PRIMARY KEY,
+  lock_id INT IDENTITY (1, 1) PRIMARY KEY,
   station_id INT NOT NULL,
   lock_key UNIQUEIDENTIFIER NOT NULL,
   user_id UNIQUEIDENTIFIER,
@@ -37,10 +37,10 @@ CREATE TABLE Locks (
 
 -- Rental Table
 CREATE TABLE Rentals (
-  rental_id INT PRIMARY KEY,
+  rental_id INT IDENTITY (1, 1) PRIMARY KEY,
   user_id UNIQUEIDENTIFIER NOT NULL,
   lock_id INT NOT NULL,
-  hourly_rate DECIMAL NOT NULL,
+  hourly_rate DECIMAL(4,2) NOT NULL,
   rental_start_time DATETIME NOT NULL,
   rental_end_time DATETIME,
   FOREIGN KEY (user_id) REFERENCES Users(user_id),
