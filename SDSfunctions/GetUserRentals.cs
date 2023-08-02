@@ -15,12 +15,13 @@ namespace SDS.Function
     {
         public class UserRental
         {
-            public int rental_id { get; set; }
-            public int lock_id { get; set; }
-            public DateTime rental_start_time { get; set; }
-            public DateTime rental_end_time { get; set; }
-            public int rental_duration { get; set; }
-            public decimal total_cost { get; set; }
+            public int RentalId { get; set; }
+            public int LockId { get; set; }
+            public string StationName { get; set; }
+            public DateTime RentalStartTime { get; set; }
+            public DateTime RentalEndTime { get; set; }
+            public int RentalDuration { get; set; }
+            public decimal TotalCost { get; set; }
         }
 
         public static Dictionary<string, int> RentalStatuses = new Dictionary<string, int> {
@@ -36,6 +37,11 @@ namespace SDS.Function
             ClaimsPrincipal claimIdentity)
         {
             var isCurrent = RentalStatuses.GetValueOrDefault(rentalStatus, -1);
+            if (isCurrent == -1)
+            {
+                return new BadRequestResult();
+            }
+
             var userCurrentRentals = new List<UserRental>();
             using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
             {
@@ -46,13 +52,15 @@ namespace SDS.Function
                     {
                         while (await reader.ReadAsync())
                         {
-                            userCurrentRentals.Add(new UserRental {
-                                rental_id = reader.GetInt32(0),
-                                lock_id = reader.GetInt32(1),
-                                rental_start_time = reader.GetDateTime(2),
-                                rental_end_time = reader.GetDateTime(3),
-                                rental_duration = reader.GetInt32(4),
-                                total_cost = reader.GetDecimal(5)
+                            userCurrentRentals.Add(new UserRental
+                            {
+                                RentalId = reader.GetInt32(0),
+                                LockId = reader.GetInt32(1),
+                                StationName = reader.GetString(2),
+                                RentalStartTime = reader.GetDateTime(3),
+                                RentalEndTime = reader.GetDateTime(4),
+                                RentalDuration = reader.GetInt32(5),
+                                TotalCost = reader.GetDecimal(6)
                             });
                         }
                     }

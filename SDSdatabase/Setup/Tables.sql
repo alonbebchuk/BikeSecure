@@ -30,7 +30,6 @@ CREATE TABLE Stations (
 CREATE TABLE Locks (
   lock_id INT IDENTITY (1, 1) PRIMARY KEY,
   station_id INT NOT NULL,
-  lock_key UNIQUEIDENTIFIER NOT NULL,
   user_id UNIQUEIDENTIFIER,
   FOREIGN KEY (station_id) REFERENCES Stations(station_id),
   FOREIGN KEY (user_id) REFERENCES Users(user_id)

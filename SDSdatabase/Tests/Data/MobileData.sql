@@ -1,5 +1,5 @@
-DECLARE @user_id UNIQUEIDENTIFIER = '123e4567-e89b-12d3-a456-426614174000';
-DECLARE @manager_id UNIQUEIDENTIFIER = '987e6543-a21b-23d4-c456-314159265358';
+DECLARE @user_id UNIQUEIDENTIFIER = CAST('11111111-1111-1111-1111-111111111111' AS UNIQUEIDENTIFIER);
+DECLARE @manager_id UNIQUEIDENTIFIER = CAST('22222222-2222-2222-2222-222222222222' AS UNIQUEIDENTIFIER);
 
 INSERT INTO Users (user_id) VALUES (@user_id);
 
@@ -33,10 +33,9 @@ WITH LocksPattern AS (
     WHERE lock_number < total_locks
       AND lock_number + 1 < 25
 )
-INSERT INTO Locks (station_id, lock_key, user_id)
+INSERT INTO Locks (station_id, user_id)
 SELECT
     station_id,
-    NEWID(),
     NULL
 FROM LocksPattern;
 UPDATE Locks
