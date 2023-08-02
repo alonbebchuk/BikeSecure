@@ -3,16 +3,35 @@ GO
 CREATE OR ALTER PROCEDURE StartRental(@user_id UNIQUEIDENTIFIER, @lock_id INT)
     AS
     BEGIN
-        DECLARE @isLockFree BIT;
-        SELECT @isLockFree = 1 FROM Locks WHERE lock_id = @lock_id AND user_id IS NULL;
-        IF @isLockFree = 1
+        DECLARE @lockRentalStatus INT;
+        EXEC @lockRentalStatus = GetLockRentalStatus @user_id, @lock_id;
+        IF @lockRentalStatus = 0 -- Available
             BEGIN
-                UPDATE Locks SET user_id = @user_id WHERE lock_id = @lock_id;
-                DECLARE @stationId INT;
-                SELECT @stationId = station_id FROM Locks WHERE lock_id = @lock_id;
-                DECLARE @hourlyRate DECIMAL(4,2);
-                SELECT @hourlyRate = hourly_rate FROM Stations WHERE station_id = @stationId;
-                INSERT INTO Rentals (user_id, lock_id, hourly_rate, rental_start_time) VALUES (@user_id, @lock_id, @hourlyRate, GETDATE());
+                UPDATE Locks
+                SET user_id = @user_id
+                WHERE lock_id = @lock_id;
+
+                INSERT INTO Rentals (
+                    user_id,
+                    lock_id,
+                    station_name,
+                    location_latitude,
+                    location_longitude,
+                    hourly_rate,
+                    rental_start_time
+                )
+                SELECT
+                    @user_id,
+                    lock_id,
+                    station_name,
+                    location_latitude,
+                    location_longitude,
+                    hourly_rate,
+                    GETDATE()
+                FROM Locks JOIN Stations
+                ON Locks.station_id = Stations.station_id
+                WHERE lock_id = @lock_id;
+
                 RETURN 1;
             END;
         RETURN 0;

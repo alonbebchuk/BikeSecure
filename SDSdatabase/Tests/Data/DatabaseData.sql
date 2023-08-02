@@ -1,12 +1,3 @@
--- User Table
-INSERT INTO Users (user_id)
-VALUES ('11111111-1111-1111-1111-111111111111'),
-       ('22222222-2222-2222-2222-222222222222');
-
--- Manager Table
-INSERT INTO Managers (manager_id)
-VALUES ('11111111-1111-1111-1111-111111111111');
-
 -- Station Table
 INSERT INTO Stations (manager_id, hourly_rate, location_latitude, location_longitude)
 VALUES ('11111111-1111-1111-1111-111111111111', 10.50, 37.7749, -122.4194), -- station_id=1

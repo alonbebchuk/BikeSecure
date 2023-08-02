@@ -13,60 +13,65 @@ namespace SDS.Function
 {
     public static class GetUserRentals
     {
+        public enum RentalStatuses
+        {
+            Past = 0,
+            Current = 1
+        }
+
         public class UserRental
         {
-            public int RentalId { get; set; }
-            public int LockId { get; set; }
             public string StationName { get; set; }
+            public decimal LocationLatitude { get; set; }
+            public decimal LocationLongitude { get; set; }
+            public decimal HourlyRate { get; set; }
             public DateTime RentalStartTime { get; set; }
             public DateTime RentalEndTime { get; set; }
-            public int RentalDuration { get; set; }
+            public TimeSpan RentalDuration { get; set; }
             public decimal TotalCost { get; set; }
         }
 
-        public static Dictionary<string, int> RentalStatuses = new Dictionary<string, int> {
-            {"past", 0},
-            {"current", 1},
-        };
-
         [FunctionName("GetUserRentals")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "rentals/{rentalStatus:alpha}")] HttpRequest req,
-            string rentalStatus,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "rentals/{status:alpha}")] HttpRequest req,
+            string status,
             ILogger log,
-            ClaimsPrincipal claimIdentity)
+            ClaimsPrincipal claimIdentity
+        )
         {
-            var isCurrent = RentalStatuses.GetValueOrDefault(rentalStatus, -1);
-            if (isCurrent == -1)
+            if (!Enum.TryParse<RentalStatuses>(status, true, out var rentalStatus))
             {
                 return new BadRequestResult();
             }
 
-            var userCurrentRentals = new List<UserRental>();
+            var userRentals = new List<UserRental>();
             using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
             {
                 connection.Open();
-                using (var command = new SqlCommand($"SELECT * FROM GetUserRentals('11111111-1111-1111-1111-111111111111', {isCurrent});", connection))
+                var query = $"SELECT * FROM GetUserRentals('11111111-1111-1111-1111-111111111111', {(int)rentalStatus});";
+                using (var command = new SqlCommand(query, connection))
                 {
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
                         {
-                            userCurrentRentals.Add(new UserRental
+                            var userRental = new UserRental
                             {
-                                RentalId = reader.GetInt32(0),
-                                LockId = reader.GetInt32(1),
-                                StationName = reader.GetString(2),
-                                RentalStartTime = reader.GetDateTime(3),
-                                RentalEndTime = reader.GetDateTime(4),
-                                RentalDuration = reader.GetInt32(5),
-                                TotalCost = reader.GetDecimal(6)
-                            });
+                                StationName = reader.GetString(0),
+                                LocationLatitude = reader.GetDecimal(1),
+                                LocationLongitude = reader.GetDecimal(2),
+                                HourlyRate = reader.GetDecimal(3),
+                                RentalStartTime = reader.GetDateTime(4),
+                                RentalEndTime = rentalStatus == RentalStatuses.Current ? DateTime.UtcNow : reader.GetDateTime(5)
+                            };
+                            userRental.RentalDuration = userRental.RentalEndTime - userRental.RentalStartTime;
+                            userRental.TotalCost = (decimal)userRental.RentalDuration.TotalHours * userRental.HourlyRate;
+                            userRentals.Add(userRental);
                         }
                     }
                 }
             }
-            return new OkObjectResult(userCurrentRentals);
+            return new OkObjectResult(userRentals);
         }
     }
 }
