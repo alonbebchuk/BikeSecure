@@ -1,6 +1,6 @@
 DROP PROCEDURE IF EXISTS EndRental;
 GO
-CREATE OR ALTER PROCEDURE EndRental(@user_id UNIQUEIDENTIFIER, @lock_id INT)
+CREATE OR ALTER PROCEDURE EndRental(@user_id TEXT, @lock_id INT)
     AS
     BEGIN
         DECLARE @lockRentalStatus INT;

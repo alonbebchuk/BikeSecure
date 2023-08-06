@@ -1,6 +1,6 @@
 DROP FUNCTION IF EXISTS GetLockData;
 GO
-CREATE OR ALTER FUNCTION GetLockData(@user_id UNIQUEIDENTIFIER, @lock_id INT)
+CREATE OR ALTER FUNCTION GetLockData(@user_id TEXT, @lock_id INT)
     RETURNS @LockData Table (
         lock_status INT NOT NULL,
         lock_id INT NOT NULL,

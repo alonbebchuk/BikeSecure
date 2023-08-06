@@ -1,6 +1,6 @@
 DROP FUNCTION IF EXISTS GetUserStations;
 GO
-CREATE OR ALTER FUNCTION GetUserStations(@user_id UNIQUEIDENTIFIER)
+CREATE OR ALTER FUNCTION GetUserStations(@user_id TEXT)
     RETURNS @UserStations Table (
             station_name TEXT NOT NULL,
             location_latitude DECIMAL(9,6) NOT NULL,

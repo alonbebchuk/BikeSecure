@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS Stations;
 -- Station Table
 CREATE TABLE Stations (
   station_id INT IDENTITY (1, 1) PRIMARY KEY,
-  manager_id UNIQUEIDENTIFIER NOT NULL,
+  manager_id TEXT NOT NULL,
   station_name TEXT NOT NULL,
   location_latitude DECIMAL(9,6) NOT NULL,
   location_longitude DECIMAL(9,6) NOT NULL,
@@ -16,14 +16,14 @@ CREATE TABLE Stations (
 CREATE TABLE Locks (
   lock_id INT IDENTITY (1, 1) PRIMARY KEY,
   station_id INT NOT NULL,
-  user_id UNIQUEIDENTIFIER,
+  user_id TEXT,
   FOREIGN KEY (station_id) REFERENCES Stations(station_id)
 );
 
 -- Rental Table
 CREATE TABLE Rentals (
   rental_id INT IDENTITY (1, 1) PRIMARY KEY,
-  user_id UNIQUEIDENTIFIER NOT NULL,
+  user_id TEXT NOT NULL,
   lock_id INT NOT NULL,
   station_name TEXT NOT NULL,
   location_latitude DECIMAL(9,6) NOT NULL,
