@@ -11,5 +11,5 @@ Portal Settings:
         Workload environment: Development,
         Connectivity method: Public endpoint,
         Allow Azure services and resources to access this server: Yes,
-        Add current client IP address: Yes
+        **Add current client IP address: Yes**
     }

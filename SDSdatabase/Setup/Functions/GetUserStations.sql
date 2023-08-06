@@ -2,12 +2,12 @@ DROP FUNCTION IF EXISTS GetUserStations;
 GO
 CREATE OR ALTER FUNCTION GetUserStations(@user_id UNIQUEIDENTIFIER)
     RETURNS @UserStations Table (
-            station_name TEXT,
-            location_latitude DECIMAL,
-            location_longitude DECIMAL,
-            hourly_rate DECIMAL(4,2),
-            available_locks INT,
-            user_owned_locks INT
+            station_name TEXT NOT NULL,
+            location_latitude DECIMAL(9,6) NOT NULL,
+            location_longitude DECIMAL(9,6) NOT NULL,
+            hourly_rate DECIMAL(4,2) NOT NULL,
+            available_locks INT NOT NULL,
+            user_owned_locks INT NOT NULL
     )
     BEGIN
         INSERT INTO @UserStations
