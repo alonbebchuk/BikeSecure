@@ -20,6 +20,8 @@ CREATE OR ALTER FUNCTION GetLockData(@user_id UNIQUEIDENTIFIER, @lock_id INT)
             SELECT
                 @lockStatus,
                 lock_id,
+                location_latitude,
+                location_longitude,
                 station_name,
                 hourly_rate
             FROM Locks JOIN Stations
