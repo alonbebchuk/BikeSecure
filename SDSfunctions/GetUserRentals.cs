@@ -36,24 +36,23 @@ namespace SDS.Function
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "rentals/{status:alpha}")] HttpRequest req,
             string status,
-            ILogger log,
-            ClaimsPrincipal claimIdentity
-        )
+            ILogger log)
         {
-            if (!Enum.TryParse<RentalStatuses>(status, true, out var rentalStatus))
+            var sid = req.Headers["sid"];
+            if (!Enum.TryParse<RentalStatuses>(status, true, out var rentalStatus) || string.IsNullOrEmpty(sid))
             {
                 return new BadRequestResult();
             }
 
-            var userRentals = new List<UserRental>();
             using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
             {
                 connection.Open();
-                var query = $"SELECT * FROM GetUserRentals('11111111-1111-1111-1111-111111111111', {(int)rentalStatus});";
+                var query = $"SELECT * FROM GetUserRentals('{sid}', {(int)rentalStatus});";
                 using (var command = new SqlCommand(query, connection))
                 {
                     using (var reader = await command.ExecuteReaderAsync())
                     {
+                        var userRentals = new List<UserRental>();
                         while (await reader.ReadAsync())
                         {
                             var userRental = new UserRental
@@ -67,13 +66,13 @@ namespace SDS.Function
                                 RentalEndTime = reader.GetDateTime(6)
                             };
                             userRental.RentalDuration = userRental.RentalEndTime - userRental.RentalStartTime;
-                            userRental.TotalCost = (decimal)userRental.RentalDuration.TotalHours * userRental.HourlyRate;
+                            userRental.TotalCost = (int)userRental.RentalDuration.TotalHours * userRental.HourlyRate;
                             userRentals.Add(userRental);
                         }
+                        return new OkObjectResult(userRentals);
                     }
                 }
             }
-            return new OkObjectResult(userRentals);
         }
     }
 }

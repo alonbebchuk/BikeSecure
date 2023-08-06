@@ -37,14 +37,17 @@ namespace SDS.Function
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "locks/data/{lockId:int}")] HttpRequest req,
             int lockId,
-            ILogger log,
-            ClaimsPrincipal claimIdentity
-        )
+            ILogger log)
         {
+            var sid = req.Headers["sid"];
+            if (string.IsNullOrEmpty(sid)) {
+                return new BadRequestResult();
+            }
+
             using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
             {
                 connection.Open();
-                var query = $"SELECT * FROM GetLockData('11111111-1111-1111-1111-111111111111', {lockId});";
+                var query = $"SELECT * FROM GetLockData('{sid}', {lockId});";
                 using (var command = new SqlCommand(query, connection))
                 {
                     using (var reader = await command.ExecuteReaderAsync())
@@ -66,7 +69,7 @@ namespace SDS.Function
                                 lockData.RentalStartTime = reader.GetDateTime(6);
                                 lockData.RentalEndTime = reader.GetDateTime(7);
                                 lockData.RentalDuration = lockData.RentalEndTime - lockData.RentalStartTime;
-                                lockData.TotalCost = (decimal)lockData.RentalDuration.Value.TotalHours * lockData.HourlyRate;
+                                lockData.TotalCost = (int)lockData.RentalDuration.Value.TotalHours * lockData.HourlyRate;
                             }
                         }
                         return new OkObjectResult(lockData);

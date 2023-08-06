@@ -27,19 +27,23 @@ namespace SDS.Function
         [FunctionName("GetUserStations")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "stations")] HttpRequest req,
-            ILogger log,
-            ClaimsPrincipal claimIdentity
-        )
+            ILogger log)
         {
-            var userStations = new List<UserStation>();
+            var sid = req.Headers["sid"];
+            if (string.IsNullOrEmpty(sid))
+            {
+                return new BadRequestResult();
+            }
+
             using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
             {
                 connection.Open();
-                var query = $"SELECT * FROM GetUserStations('11111111-1111-1111-1111-111111111111');";
+                var query = $"SELECT * FROM GetUserStations('{sid}');";
                 using (var command = new SqlCommand(query, connection))
                 {
                     using (var reader = await command.ExecuteReaderAsync())
                     {
+                        var userStations = new List<UserStation>();
                         while (await reader.ReadAsync())
                         {
                             userStations.Add(new UserStation
@@ -52,10 +56,10 @@ namespace SDS.Function
                                 UserOwnedLocks = reader.GetInt32(5)
                             });
                         }
+                        return new OkObjectResult(userStations);
                     }
                 }
             }
-            return new OkObjectResult(userStations);
         }
     }
 }

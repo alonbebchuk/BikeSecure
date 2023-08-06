@@ -30,11 +30,10 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "rentals/{action:alpha}/{lockId:int}")] HttpRequest req,
             string action,
             int lockId,
-            ILogger log,
-            ClaimsPrincipal claimIdentity
-        )
+            ILogger log)
         {
-            if (!Enum.TryParse<RentalActions>(action, true, out var rentalAction))
+            var sid = req.Headers["sid"];
+            if (!Enum.TryParse<RentalActions>(action, true, out var rentalAction) || string.IsNullOrEmpty(sid))
             {
                 return new BadRequestResult();
             }
@@ -42,7 +41,7 @@ namespace SDS.Function
             using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
             {
                 connection.Open();
-                var query = $"DECLARE @rentalActionStatusCode INT; EXEC @rentalActionStatusCode = {rentalAction}Rental @user_id = '11111111-1111-1111-1111-111111111111', @lock_id = {lockId}; SELECT @rentalActionStatusCode;";
+                var query = $"DECLARE @rentalActionStatusCode INT; EXEC @rentalActionStatusCode = {rentalAction}Rental @user_id = '{sid}', @lock_id = {lockId}; SELECT @rentalActionStatusCode;";
                 using (var command = new SqlCommand(query, connection))
                 {
                     var rentalActionStatus = (RentalActionStatuses)await command.ExecuteScalarAsync();
