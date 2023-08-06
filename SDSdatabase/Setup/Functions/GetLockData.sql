@@ -13,7 +13,8 @@ CREATE OR ALTER FUNCTION GetLockData(@user_id UNIQUEIDENTIFIER, @lock_id INT)
     )
     BEGIN
         DECLARE @lockStatus INT;
-        SELECT @lockStatus = IIF(user_id IS NULL, 0, IIF(user_id = @user_id, 1, -1)) FROM Locks WHERE lock_id = @lock_id;
+        SELECT @lockStatus = IIF(user_id IS NULL, 0, IIF(user_id = @user_id, 1, NULL)) FROM Locks WHERE lock_id = @lock_id;
+        SET @lockStatus = IIF(@lockStatus IS NULL, -1, @lockStatus);
 
         IF @lockStatus = 0 -- Available
             INSERT INTO @LockData (lock_status, lock_id, station_name, hourly_rate)
@@ -41,7 +42,7 @@ CREATE OR ALTER FUNCTION GetLockData(@user_id UNIQUEIDENTIFIER, @lock_id INT)
             FROM Rentals
             WHERE lock_id = @lock_id
                 AND rental_end_time IS NULL;
-        ELSE -- Unavailable
+        ELSE IF @lockStatus = -1 -- Unavailable
             INSERT INTO @LockData (lock_status, lock_id)
             VALUES (@lockStatus, @lock_id);
 
