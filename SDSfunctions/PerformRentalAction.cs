@@ -27,7 +27,7 @@ namespace SDS.Function
 
         [FunctionName("PerformRentalAction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "rentals/{action:alpha}/{lockId:int}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "rentals/{action:alpha}/{lockId:int}")] HttpRequest req,
             string action,
             int lockId,
             ILogger log,

@@ -21,6 +21,7 @@ namespace SDS.Function
 
         public class UserRental
         {
+            public int LockId { get; set; }
             public string StationName { get; set; }
             public decimal LocationLatitude { get; set; }
             public decimal LocationLongitude { get; set; }
@@ -33,7 +34,7 @@ namespace SDS.Function
 
         [FunctionName("GetUserRentals")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "rentals/{status:alpha}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "rentals/{status:alpha}")] HttpRequest req,
             string status,
             ILogger log,
             ClaimsPrincipal claimIdentity
@@ -57,12 +58,13 @@ namespace SDS.Function
                         {
                             var userRental = new UserRental
                             {
-                                StationName = reader.GetString(0),
-                                LocationLatitude = reader.GetDecimal(1),
-                                LocationLongitude = reader.GetDecimal(2),
-                                HourlyRate = reader.GetDecimal(3),
-                                RentalStartTime = reader.GetDateTime(4),
-                                RentalEndTime = rentalStatus == RentalStatuses.Current ? DateTime.UtcNow : reader.GetDateTime(5)
+                                LockId = reader.GetInt32(0),
+                                StationName = reader.GetString(1),
+                                LocationLatitude = reader.GetDecimal(2),
+                                LocationLongitude = reader.GetDecimal(3),
+                                HourlyRate = reader.GetDecimal(4),
+                                RentalStartTime = reader.GetDateTime(5),
+                                RentalEndTime = reader.GetDateTime(6)
                             };
                             userRental.RentalDuration = userRental.RentalEndTime - userRental.RentalStartTime;
                             userRental.TotalCost = (decimal)userRental.RentalDuration.TotalHours * userRental.HourlyRate;

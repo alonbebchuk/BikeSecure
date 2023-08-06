@@ -19,7 +19,7 @@ CREATE OR ALTER FUNCTION GetUserRentals(@user_id UNIQUEIDENTIFIER, @is_current B
             location_longitude,
             hourly_rate,
             rental_start_time,
-            rental_end_time
+            IIF(rental_end_time IS NULL, GETDATE(), rental_end_time)
         FROM Rentals
         WHERE user_id = @user_id
             AND @is_current = IIF(rental_end_time IS NULL, 1, 0);

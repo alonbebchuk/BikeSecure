@@ -26,7 +26,7 @@ namespace SDS.Function
 
         [FunctionName("GetUserStations")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "stations")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "stations")] HttpRequest req,
             ILogger log,
             ClaimsPrincipal claimIdentity
         )
