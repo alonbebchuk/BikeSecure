@@ -1,9 +1,9 @@
 DROP FUNCTION IF EXISTS GetUserRentals;
 GO
-CREATE OR ALTER FUNCTION GetUserRentals(@user_id TEXT, @is_current BIT)
+CREATE OR ALTER FUNCTION GetUserRentals(@user_id NVARCHAR(MAX), @is_current BIT)
     RETURNS @UserRentals Table (
         lock_id INT NOT NULL,
-        station_name TEXT NOT NULL,
+        station_name NVARCHAR(MAX) NOT NULL,
         location_latitude DECIMAL(9,6) NOT NULL,
         location_longitude DECIMAL(9,6) NOT NULL,
         hourly_rate DECIMAL(4,2) NOT NULL,

@@ -1,10 +1,10 @@
 DROP FUNCTION IF EXISTS GetLockData;
 GO
-CREATE OR ALTER FUNCTION GetLockData(@user_id TEXT, @lock_id INT)
+CREATE OR ALTER FUNCTION GetLockData(@user_id NVARCHAR(MAX), @lock_id INT)
     RETURNS @LockData Table (
         lock_status INT NOT NULL,
         lock_id INT NOT NULL,
-        station_name TEXT,
+        station_name NVARCHAR(MAX),
         location_latitude DECIMAL(9,6),
         location_longitude DECIMAL(9,6),
         hourly_rate DECIMAL(4,2),

@@ -1,11 +1,16 @@
 DROP PROCEDURE IF EXISTS StartRental;
 GO
-CREATE OR ALTER PROCEDURE StartRental(@user_id TEXT, @lock_id INT)
+CREATE OR ALTER PROCEDURE StartRental(@user_id NVARCHAR(MAX), @lock_id INT)
     AS
     BEGIN
-        DECLARE @lockRentalStatus INT;
-        EXEC @lockRentalStatus = GetLockRentalStatus @user_id, @lock_id;
-        IF @lockRentalStatus = 0 -- Available
+        DECLARE @lockStatus INT;
+        SELECT @lockStatus = CASE
+            WHEN user_id IS NULL THEN 0     -- Available
+            WHEN user_id = @user_id THEN 1  -- Owned
+            ELSE NULL                       -- Unavailable
+        END
+        FROM Locks WHERE lock_id = @lock_id;
+        IF @lockStatus = 0 -- Available
             BEGIN
                 UPDATE Locks
                 SET user_id = @user_id

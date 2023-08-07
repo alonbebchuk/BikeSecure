@@ -1,8 +1,8 @@
 DROP FUNCTION IF EXISTS GetUserStations;
 GO
-CREATE OR ALTER FUNCTION GetUserStations(@user_id TEXT)
+CREATE OR ALTER FUNCTION GetUserStations(@user_id NVARCHAR(MAX))
     RETURNS @UserStations Table (
-            station_name TEXT NOT NULL,
+            station_name NVARCHAR(MAX) NOT NULL,
             location_latitude DECIMAL(9,6) NOT NULL,
             location_longitude DECIMAL(9,6) NOT NULL,
             hourly_rate DECIMAL(4,2) NOT NULL,

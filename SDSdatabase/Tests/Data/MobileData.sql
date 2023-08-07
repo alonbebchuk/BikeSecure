@@ -1,5 +1,5 @@
-DECLARE @user_id TEXT = 'user_413046ae5f07424db6ba9da0c4340a24';
-DECLARE @manager_id TEXT = '22222222-2222-2222-2222-222222222222';
+DECLARE @user_id NVARCHAR(MAX) = 'user_413046ae5f07424db6ba9da0c4340a24';
+DECLARE @manager_id NVARCHAR(MAX) = '22222222-2222-2222-2222-222222222222';
 
 -- Station Table
 INSERT INTO Stations (manager_id, station_name, location_latitude, location_longitude, hourly_rate)
