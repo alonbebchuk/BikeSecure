@@ -1,75 +1,54 @@
 #include <Arduino.h>
 #include <SPI.h>
-#if SOFTWARE_SERIAL_AVAILABLE
-  #include <SoftwareSerial.h>
-#endif
-
+#include <SoftwareSerial.h>
 #include "Adafruit_BLE.h"
 #include "Adafruit_BluefruitLE_SPI.h"
+#include "Adafruit_BluefruitLE_UART.h"
 
+#define BLUEFRUIT_SPI_CS            8
+#define BLUEFRUIT_SPI_IRQ           7
+#define BLUEFRUIT_SPI_RST          -1
 
-/* Create hardware SPI Bluefruit object */
-Adafruit_BluefruitLE_SPI ble(8, 7, 4);
+Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
 
-void broadcastState() {
-  long stateCode;
-  ble.readNVM(0, &stateCode);
-  ble.print("AT+BLEUARTTXF="); ble.println(stateCode);
-  ble.waitForOK();
-}
-
-void lockStation() {
-  if (ble.sendCommandCheckOK("AT+HWModeLED=MANUAL,ON")) {
-    ble.writeNVM(0, (long)1);
-  }
-  broadcastState();
-}
-
-void unlockStation() {
-  if (ble.sendCommandCheckOK("AT+HWModeLED=MANUAL,OFF")) {
-    ble.writeNVM(0, (long)0);
-  }
-  broadcastState();
-}
+#define BUFSIZE                     512
+#define VERBOSE_MODE                false
 
 void setup(void)
 {
+  while (!Serial);
   delay(500);
 
   Serial.begin(115200);
 
-  ble.begin(false);
+  ble.begin(VERBOSE_MODE);
   ble.factoryReset();
+  ble.echo(false);
 
   while (!ble.isConnected()) {
       delay(500);
   }
 
-  unlockStation();
+  ble.sendCommandCheckOK("AT+HWModeLED=MANUAL,OFF");
+  ble.setMode(BLUEFRUIT_MODE_DATA);
 
-  Serial.println(F("Started"));
+  Serial.println("Started");
 }
 
 void loop(void)
 {
-  char request;
+  while (ble.available())
+  {
+    ble.readline();
+    ble.waitForOK();
+    Serial.println(ble.buffer);
 
-  ble.println("AT+BLEUARTRX");
-  ble.readline();
-  ble.waitForOK();
-
-  if (strlen(ble.buffer) == 1) {
-    request = ble.buffer[0];
-    switch(request) {
-      case 'S':
-        broadcastState();
-        break;
-      case 'L':
-        lockStation();
-        break;
-      case 'U':
-        unlockStation();
-        break;
+    if (strcmp(ble.buffer, "Lock") == 0 && ble.sendCommandCheckOK("AT+HWModeLED=MANUAL,ON")) {
+      ble.print("Success");
+    } else if (strcmp(ble.buffer, "Unlock") == 0 && ble.sendCommandCheckOK("AT+HWModeLED=MANUAL,OFF")) {
+      ble.print("Success");
+    } else {
+      ble.print("Failure");
     }
   }
 }

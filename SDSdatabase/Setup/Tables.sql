@@ -5,36 +5,55 @@ DROP TABLE IF EXISTS Stations;
 -- Station Table
 CREATE TABLE Stations
 (
-  station_id INT IDENTITY (1, 1) PRIMARY KEY,
-  station_url NVARCHAR(MAX) NOT NULL,
-  station_name NVARCHAR(MAX) NOT NULL,
-  location_latitude DECIMAL(9,6) NOT NULL,
-  location_longitude DECIMAL(9,6) NOT NULL,
-  hourly_rate DECIMAL(4,2) NOT NULL
+    id INT IDENTITY (1, 1) PRIMARY KEY,
+    -- Station Data
+    name NVARCHAR(MAX) NOT NULL,
+    latitude DECIMAL(9,6) NOT NULL,
+    longitude DECIMAL(9,6) NOT NULL,
+    hourly_rate DECIMAL(4,2) NOT NULL,
+    -- Station Secret Data
+    url NVARCHAR(MAX) NOT NULL
 );
 
 -- Lock Table
 CREATE TABLE Locks
 (
-  lock_id INT IDENTITY (1, 1) PRIMARY KEY,
-  station_id INT NOT NULL,
-  lock_key NVARCHAR(MAX) NOT NULL,
-  lock_mac NVARCHAR(MAX) NOT NULL,
-  user_id NVARCHAR(MAX),
-  FOREIGN KEY (station_id) REFERENCES Stations(station_id)
+    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    -- Station Data
+    station_id INT FOREIGN KEY REFERENCES Stations(id) NOT NULL,
+    station_name NVARCHAR(MAX) NOT NULL,
+    latitude DECIMAL(9,6) NOT NULL,
+    longitude DECIMAL(9,6) NOT NULL,
+    hourly_rate DECIMAL(4,2) NOT NULL,
+    -- Station Secret Data
+    url NVARCHAR(MAX) NOT NULL,
+    -- Lock Data
+    name NVARCHAR(MAX) NOT NULL,
+    -- Lock Secret Data
+    secret NVARCHAR(MAX) NOT NULL,
+    mac NVARCHAR(MAX) NOT NULL,
+    -- Rental Data
+    user_id NVARCHAR(MAX),
+    start_time DATETIME,
 );
 
 -- Rental Table
 CREATE TABLE Rentals
 (
-  rental_id INT IDENTITY (1, 1) PRIMARY KEY,
-  user_id NVARCHAR(MAX) NOT NULL,
-  lock_id INT NOT NULL,
-  station_name NVARCHAR(MAX) NOT NULL,
-  location_latitude DECIMAL(9,6) NOT NULL,
-  location_longitude DECIMAL(9,6) NOT NULL,
-  hourly_rate DECIMAL(4,2) NOT NULL,
-  rental_start_time DATETIME NOT NULL,
-  rental_end_time DATETIME,
-  FOREIGN KEY (lock_id) REFERENCES Locks(lock_id)
+    id INT IDENTITY (1, 1) PRIMARY KEY, -- NOT USED
+    -- Station Data
+    station_id INT FOREIGN KEY REFERENCES Stations(id) NOT NULL, -- NOT USED
+    station_name NVARCHAR(MAX) NOT NULL,
+    latitude DECIMAL(9,6) NOT NULL,
+    longitude DECIMAL(9,6) NOT NULL,
+    hourly_rate DECIMAL(4,2) NOT NULL,
+    -- Lock Data
+    lock_id UNIQUEIDENTIFIER FOREIGN KEY REFERENCES Locks(id) NOT NULL, -- NOT USED
+    lock_name NVARCHAR(MAX) NOT NULL,
+    -- Rental Data
+    user_id NVARCHAR(MAX) NOT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    duration TIME NOT NULL,
+    cost DECIMAL(9,2) NOT NULL
 );
