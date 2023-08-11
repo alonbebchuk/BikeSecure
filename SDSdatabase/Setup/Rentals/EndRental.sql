@@ -15,14 +15,6 @@ BEGIN
 
     IF @lockStatus = 1
     BEGIN
-        UPDATE Locks
-            SET
-                -- Rental Data
-                user_id = NULL,
-                start_time = NULL
-            WHERE
-                id = @lock_id;
-
         DECLARE @now DATETIME;
         SET @now = GETDATE();
 
@@ -75,6 +67,14 @@ BEGIN
             Locks
         WHERE
             id = @lock_id;
+
+        UPDATE Locks
+            SET
+                -- Rental Data
+                user_id = NULL,
+                start_time = NULL
+            WHERE
+                id = @lock_id;
 
         RETURN 1;
     END;

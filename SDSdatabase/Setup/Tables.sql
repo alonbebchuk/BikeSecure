@@ -34,7 +34,7 @@ CREATE TABLE Locks
     mac NVARCHAR(MAX) NOT NULL,
     -- Rental Data
     user_id NVARCHAR(MAX),
-    start_time DATETIME,
+    start_time DATETIME
 );
 
 -- Rental Table

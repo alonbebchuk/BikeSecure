@@ -13,7 +13,7 @@ RETURNS @Locks Table
     lock_id UNIQUEIDENTIFIER NOT NULL,
     lock_name NVARCHAR(MAX) NOT NULL,
     -- Rental Data
-    start_time DATETIME NOT NULL
+    start_time DATETIME
 )
 BEGIN
     INSERT INTO @Locks
