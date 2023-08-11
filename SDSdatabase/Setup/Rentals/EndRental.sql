@@ -6,7 +6,7 @@ CREATE OR ALTER PROCEDURE EndRental
     -- Station Secret Data
     @url NVARCHAR(MAX) OUTPUT,
     -- Lock Secret Data
-    @secret NVARCHAR(MAX) OUTPUT,
+    @secret BINARY(512) OUTPUT,
     @mac NVARCHAR(MAX) OUTPUT
 AS
 BEGIN
@@ -25,12 +25,12 @@ BEGIN
             station_name,
             latitude,
             longitude,
-            hourly_rate,
             -- Lock Data
             lock_id,
             lock_name,
             -- Rental Data
             user_id,
+            hourly_rate,
             start_time,
             end_time,
             duration,
@@ -42,12 +42,12 @@ BEGIN
             station_name,
             latitude,
             longitude,
-            hourly_rate,
             -- Lock Data
             id,
             name,
             -- Rental Data
             user_id,
+            hourly_rate,
             start_time,
             @now,
             @now - start_time,
@@ -68,13 +68,26 @@ BEGIN
         WHERE
             id = @lock_id;
 
-        UPDATE Locks
+        DECLARE @deleted BIT;
+        SELECT @deleted = deleted
+        FROM Locks
+        WHERE id = @lock_id;
+
+        IF @deleted = 1
+        BEGIN
+            DELETE FROM Locks
+            WHERE id = @lock_id;
+        END;
+        ELSE
+        BEGIN
+            UPDATE Locks
             SET
                 -- Rental Data
                 user_id = NULL,
+                hourly_rate = NULL,
                 start_time = NULL
-            WHERE
-                id = @lock_id;
+            WHERE id = @lock_id;
+        END;
 
         RETURN 1;
     END;

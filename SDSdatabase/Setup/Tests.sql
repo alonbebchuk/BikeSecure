@@ -15,7 +15,7 @@ SELECT * FROM GetStations('user_413046ae5f07424db6ba9da0c4340a24'); -- 10 statio
 -- StartRental
 DECLARE @res INT;
 DECLARE @url NVARCHAR(MAX);
-DECLARE @secret NVARCHAR(MAX);
+DECLARE @secret BINARY(512);
 DECLARE @mac NVARCHAR(MAX);
 
 EXEC @res = EndRental 'user_413046ae5f07424db6ba9da0c4340a24', '99B4BBB2-751F-43DD-AEA9-7F7D10C0C914', @url OUTPUT, @secret OUTPUT, @mac OUTPUT;

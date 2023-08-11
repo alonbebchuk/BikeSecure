@@ -6,7 +6,7 @@ CREATE OR ALTER PROCEDURE StartRental
     -- Station Secret Data
     @url NVARCHAR(MAX) OUTPUT,
     -- Lock Secret Data
-    @secret NVARCHAR(MAX) OUTPUT,
+    @secret BINARY(512) OUTPUT,
     @mac NVARCHAR(MAX) OUTPUT
 AS
 BEGIN
@@ -22,6 +22,7 @@ BEGIN
             SET
                 -- Rental Data
                 user_id = @user_id,
+                hourly_rate = station_hourly_rate,
                 start_time = @now
             WHERE
                 id = @lock_id;

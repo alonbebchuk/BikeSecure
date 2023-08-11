@@ -8,26 +8,29 @@ RETURNS @Locks Table
     station_name NVARCHAR(MAX) NOT NULL,
     latitude DECIMAL(9,6) NOT NULL,
     longitude DECIMAL(9,6) NOT NULL,
-    hourly_rate DECIMAL(4,2) NOT NULL,
     -- Lock Data
     lock_id UNIQUEIDENTIFIER NOT NULL,
     lock_name NVARCHAR(MAX) NOT NULL,
     -- Rental Data
+    hourly_rate DECIMAL(4,2) NOT NULL,
     start_time DATETIME
 )
 BEGIN
+    DECLARE @lockStatus INT;
+    SELECT @lockStatus = [dbo].[GetLockStatus](@user_id, @lock_id);
+
     INSERT INTO @Locks
     SELECT
-        [dbo].[GetLockStatus](@user_id, @lock_id),
+        @lockStatus,
         -- Station Data
         station_name,
         latitude,
         longitude,
-        hourly_rate,
         -- Lock Data
         id,
         name,
         -- Rental Data
+        IIF(@lockStatus = 1, hourly_rate, station_hourly_rate),
         start_time
     FROM
         Locks

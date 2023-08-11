@@ -4,10 +4,11 @@ CREATE OR ALTER FUNCTION GetStations(@user_id NVARCHAR(MAX))
 RETURNS @Stations Table
 (
     -- Station Data
+    id INT NOT NULL,
     name NVARCHAR(MAX) NOT NULL,
+    hourly_rate DECIMAL(4,2) NOT NULL,
     latitude DECIMAL(9,6) NOT NULL,
     longitude DECIMAL(9,6) NOT NULL,
-    hourly_rate DECIMAL(4,2) NOT NULL,
     -- Station Calculated Data
     lock_count INT NOT NULL,
     free_lock_count INT NOT NULL,
@@ -39,10 +40,11 @@ BEGIN
     INSERT INTO @Stations
     SELECT
         -- Station Data
+        Stations.id,
         Stations.name,
+        Stations.hourly_rate,
         Stations.latitude,
         Stations.longitude,
-        Stations.hourly_rate,
         -- Station Calculated Data
         StationLockCounts.lock_count,
         StationLockCounts.free_lock_count,
