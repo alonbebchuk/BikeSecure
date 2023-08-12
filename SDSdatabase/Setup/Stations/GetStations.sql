@@ -32,11 +32,11 @@ BEGIN
         (
             SELECT
                 Stations.id,
-                SUM(1),
-                SUM(IIF(user_id IS NULL, 1, 0)),
-                SUM(IIF(user_id = @user_id , 1, 0))
+                SUM(IIF(Locks.id IS NOT NULL, 1, 0)),
+                SUM(IIF(Locks.id IS NOT NULL AND Locks.user_id IS NULL, 1, 0)),
+                SUM(IIF(Locks.id IS NOT NULL AND user_id = @user_id , 1, 0))
             FROM
-                Stations INNER JOIN Locks
+                Stations LEFT JOIN Locks
                 ON
                 Stations.id = Locks.station_id
             GROUP BY
@@ -53,7 +53,7 @@ BEGIN
         -- Station Calculated Data
         StationLockCounts.lock_count,
         StationLockCounts.free_lock_count,
-        StationLockCounts.owned_lock_count,
+        IIF(@manager = 1, StationLockCounts.lock_count - StationLockCounts.free_lock_count, StationLockCounts.owned_lock_count),
         -- Soft Delete Flag
         Stations.deleted
     FROM

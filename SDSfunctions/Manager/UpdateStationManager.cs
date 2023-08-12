@@ -23,8 +23,8 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "manage/stations/update")] HttpRequest req
         )
         {
-            var requestBody = String.Empty;
-            using (StreamReader streamReader = new StreamReader(req.Body))
+            var requestBody = string.Empty;
+            using (StreamReader streamReader = new(req.Body))
             {
                 requestBody = await streamReader.ReadToEndAsync();
             }

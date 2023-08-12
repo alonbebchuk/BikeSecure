@@ -26,7 +26,7 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "manage/stations/add")] HttpRequest req
         )
         {
-            var requestBody = String.Empty;
+            var requestBody = string.Empty;
             using (StreamReader streamReader = new StreamReader(req.Body))
             {
                 requestBody = await streamReader.ReadToEndAsync();
@@ -35,7 +35,7 @@ namespace SDS.Function
 
             using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
             connection.Open();
-            var query = $"EXEC AddStationManager {stationData.Name}, {stationData.HourlyRate}, {stationData.Latitude}, {stationData.Longitude}, {stationData.Url};";
+            var query = $"EXEC AddStationManager '{stationData.Name}', {stationData.HourlyRate}, {stationData.Latitude}, {stationData.Longitude}, '{stationData.Url}';";
             using var command = new SqlCommand(query, connection);
             await command.ExecuteNonQueryAsync();
             return new OkResult();

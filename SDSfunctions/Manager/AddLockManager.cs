@@ -33,7 +33,7 @@ namespace SDS.Function
 
             using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
             connection.Open();
-            var query = $"EXEC AddLockManager {lockData.StationId}, {lockData.Name}, {lockData.Mac};";
+            var query = $"EXEC AddLockManager {lockData.StationId}, '{lockData.Name}', '{lockData.Mac}';";
             using var command = new SqlCommand(query, connection);
             await command.ExecuteNonQueryAsync();
             return new OkResult();

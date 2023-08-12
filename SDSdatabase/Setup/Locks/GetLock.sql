@@ -30,7 +30,7 @@ BEGIN
         id,
         name,
         -- Rental Data
-        IIF(@lockStatus = 1, hourly_rate, station_hourly_rate),
+        IIF(@lockStatus = 0, station_hourly_rate, hourly_rate),
         start_time
     FROM
         Locks

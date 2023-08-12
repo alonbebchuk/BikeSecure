@@ -38,33 +38,27 @@ namespace SDS.Function
         )
         {
             var sid = "user_413046ae5f07424db6ba9da0c4340a24";
-            using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
+            using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
+            connection.Open();
+            var query = $"SELECT * FROM GetLock('{sid}', '{lockId}');";
+            using var command = new SqlCommand(query, connection);
+            using var reader = await command.ExecuteReaderAsync();
+            await reader.ReadAsync();
+            var lockData = new Lock
             {
-                connection.Open();
-                var query = $"SELECT * FROM GetLock('{sid}', '{lockId}');";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        await reader.ReadAsync();
-                        var lockData = new Lock
-                        {
-                            LockStatus = (LockStatuses)reader.GetInt32(0),
-                            StationName = reader.GetString(1),
-                            Latitude = reader.GetDecimal(2),
-                            Longitude = reader.GetDecimal(3),
-                            LockId = reader.GetGuid(4),
-                            LockName = reader.GetString(5),
-                            HourlyRate = reader.GetDecimal(6)
-                        };
-                        if (reader.IsDBNull(7))
-                        {
-                            lockData.StartTime = reader.GetDateTime(7);
-                        }
-                        return new OkObjectResult(lockData);
-                    }
-                }
+                LockStatus = (LockStatuses)reader.GetInt32(0),
+                StationName = reader.GetString(1),
+                Latitude = reader.GetDecimal(2),
+                Longitude = reader.GetDecimal(3),
+                LockId = reader.GetGuid(4),
+                LockName = reader.GetString(5),
+                HourlyRate = reader.GetDecimal(6)
+            };
+            if (!reader.IsDBNull(7))
+            {
+                lockData.StartTime = reader.GetDateTime(7);
             }
+            return new OkObjectResult(lockData);
         }
     }
 }
