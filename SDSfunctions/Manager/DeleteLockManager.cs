@@ -35,7 +35,7 @@ namespace SDS.Function
             using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
             {
                 connection.Open();
-                var query = $"EXEC DeleteLockManager {lockId.LockId};";
+                var query = $"EXEC DeleteLockManager '{lockId.LockId}';";
                 using (var command = new SqlCommand(query, connection))
                 {
                     await command.ExecuteNonQueryAsync();
