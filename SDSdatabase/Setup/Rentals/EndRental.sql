@@ -68,26 +68,11 @@ BEGIN
         WHERE
             id = @lock_id;
 
-        DECLARE @deleted BIT;
-        SELECT @deleted = deleted
-        FROM Locks
-        WHERE id = @lock_id;
+        DELETE FROM Locks
+        WHERE id = @lock_id AND deleted = 1;
 
-        IF @deleted = 1
-        BEGIN
-            DELETE FROM Locks
-            WHERE id = @lock_id;
-        END;
-        ELSE
-        BEGIN
-            UPDATE Locks
-            SET
-                -- Rental Data
-                user_id = NULL,
-                hourly_rate = NULL,
-                start_time = NULL
-            WHERE id = @lock_id;
-        END;
+        DELETE FROM Stations
+        WHERE (SELECT COUNT(*) FROM Locks WHERE station_id = Stations.id) = 0;
 
         RETURN 1;
     END;

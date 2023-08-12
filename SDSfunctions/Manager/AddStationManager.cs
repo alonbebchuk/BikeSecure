@@ -6,9 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
-using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 
 namespace SDS.Function
@@ -36,16 +33,12 @@ namespace SDS.Function
             }
             var stationData = JsonConvert.DeserializeObject<StationData>(requestBody);
 
-            using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
-            {
-                connection.Open();
-                var query = $"EXEC AddStationManager {stationData.Name}, {stationData.HourlyRate}, {stationData.Latitude}, {stationData.Longitude}, {stationData.Url};";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    await command.ExecuteNonQueryAsync();
-                    return new OkResult();
-                }
-            }
+            using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
+            connection.Open();
+            var query = $"EXEC AddStationManager {stationData.Name}, {stationData.HourlyRate}, {stationData.Latitude}, {stationData.Longitude}, {stationData.Url};";
+            using var command = new SqlCommand(query, connection);
+            await command.ExecuteNonQueryAsync();
+            return new OkResult();
         }
     }
 }

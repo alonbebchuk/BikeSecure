@@ -43,37 +43,31 @@ namespace SDS.Function
                 return new BadRequestResult();
             }
 
-            using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
+            using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
+            connection.Open();
+            var query = $"SELECT * FROM Get{rentalStatus}RentalsManager({stationId});";
+            using var command = new SqlCommand(query, connection);
+            using var reader = await command.ExecuteReaderAsync();
+            var rentals = new List<Rental>();
+            while (await reader.ReadAsync())
             {
-                connection.Open();
-                var query = $"SELECT * FROM Get{rentalStatus}RentalsManager({stationId});";
-                using (var command = new SqlCommand(query, connection))
+                var rental = new Rental
                 {
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        var rentals = new List<Rental>();
-                        while (await reader.ReadAsync())
-                        {
-                            var rental = new Rental
-                            {
-                                StationName = reader.GetString(0),
-                                LockName = reader.GetString(1),
-                                UserId = reader.GetString(2),
-                                HourlyRate = reader.GetDecimal(3),
-                                StartTime = reader.GetDateTime(4)
-                            };
-                            if (rentalStatus == RentalStatuses.Past)
-                            {
-                                rental.EndTime = reader.GetDateTime(5);
-                                rental.Duration = reader.GetTimeSpan(6);
-                                rental.Cost = reader.GetDecimal(7);
-                            }
-                            rentals.Add(rental);
-                        }
-                        return new OkObjectResult(rentals);
-                    }
+                    StationName = reader.GetString(0),
+                    LockName = reader.GetString(1),
+                    UserId = reader.GetString(2),
+                    HourlyRate = reader.GetDecimal(3),
+                    StartTime = reader.GetDateTime(4)
+                };
+                if (rentalStatus == RentalStatuses.Past)
+                {
+                    rental.EndTime = reader.GetDateTime(5);
+                    rental.Duration = reader.GetTimeSpan(6);
+                    rental.Cost = reader.GetDecimal(7);
                 }
+                rentals.Add(rental);
             }
+            return new OkObjectResult(rentals);
         }
     }
 }

@@ -35,29 +35,25 @@ namespace SDS.Function
             {
                 connection.Open();
                 var query = $"SELECT * FROM GetStations(NULL);";
-                using (var command = new SqlCommand(query, connection))
+                using var command = new SqlCommand(query, connection);
+                using var reader = await command.ExecuteReaderAsync();
+                var stations = new List<Station>();
+                while (await reader.ReadAsync())
                 {
-                    using (var reader = await command.ExecuteReaderAsync())
+                    var station = new Station
                     {
-                        var stations = new List<Station>();
-                        while (await reader.ReadAsync())
-                        {
-                            var station = new Station
-                            {
-                                Id = reader.GetInt32(0),
-                                Name = reader.GetString(1),
-                                HourlyRate = reader.GetDecimal(2),
-                                Latitude = reader.GetDecimal(3),
-                                Longitude = reader.GetDecimal(4),
-                                LockCount = reader.GetInt32(5),
-                                FreeLockCount = reader.GetInt32(6)
-                            };
-                            station.OwnedLockCount = station.LockCount - station.FreeLockCount;
-                            stations.Add(station);
-                        }
-                        return new OkObjectResult(stations);
-                    }
+                        Id = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        HourlyRate = reader.GetDecimal(2),
+                        Latitude = reader.GetDecimal(3),
+                        Longitude = reader.GetDecimal(4),
+                        LockCount = reader.GetInt32(5),
+                        FreeLockCount = reader.GetInt32(6)
+                    };
+                    station.OwnedLockCount = station.LockCount - station.FreeLockCount;
+                    stations.Add(station);
                 }
+                return new OkObjectResult(stations);
             }
         }
     }

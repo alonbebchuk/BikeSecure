@@ -7,7 +7,9 @@ RETURNS @Locks Table
     lock_id UNIQUEIDENTIFIER NOT NULL,
     lock_name NVARCHAR(MAX) NOT NULL,
     -- Rental Data
-    user_id NVARCHAR(MAX)
+    user_id NVARCHAR(MAX),
+    -- Soft Delete Flag
+    deleted BIT NOT NULL
 )
 BEGIN
     INSERT INTO @Locks
@@ -16,7 +18,8 @@ BEGIN
         id,
         name,
         -- Rental Data
-        user_id
+        user_id,
+        deleted
     FROM
         Locks
     WHERE

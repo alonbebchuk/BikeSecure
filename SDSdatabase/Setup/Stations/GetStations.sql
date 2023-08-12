@@ -12,9 +12,14 @@ RETURNS @Stations Table
     -- Station Calculated Data
     lock_count INT NOT NULL,
     free_lock_count INT NOT NULL,
-    owned_lock_count INT NOT NULL
+    owned_lock_count INT NOT NULL,
+    -- Soft Delete Flag
+    deleted BIT NOT NULL
 )
 BEGIN
+    DECLARE @manager BIT;
+    SET @manager = IIF(@user_id IS NULL, 1, 0);
+
     WITH
         StationLockCounts
         (
@@ -48,11 +53,14 @@ BEGIN
         -- Station Calculated Data
         StationLockCounts.lock_count,
         StationLockCounts.free_lock_count,
-        StationLockCounts.owned_lock_count
+        StationLockCounts.owned_lock_count,
+        -- Soft Delete Flag
+        Stations.deleted
     FROM
         Stations INNER JOIN StationLockCounts
         ON
-        Stations.id = StationLockCounts.station_id;
+        Stations.id = StationLockCounts.station_id
+    WHERE (@manager = 1 OR deleted = 0);
 
     RETURN;
 END;

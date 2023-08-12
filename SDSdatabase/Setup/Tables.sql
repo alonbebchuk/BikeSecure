@@ -12,7 +12,9 @@ CREATE TABLE Stations
     latitude DECIMAL(9,6) NOT NULL,
     longitude DECIMAL(9,6) NOT NULL,
     -- Station Secret Data
-    url NVARCHAR(MAX) NOT NULL
+    url NVARCHAR(MAX) NOT NULL,
+    -- Soft Delete Flag
+    deleted BIT NOT NULL DEFAULT 0
 );
 
 -- Lock Table
