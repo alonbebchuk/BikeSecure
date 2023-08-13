@@ -22,7 +22,7 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "manage/locks/delete")] HttpRequest req
         )
         {
-            var requestBody = String.Empty;
+            var requestBody = string.Empty;
             using (StreamReader streamReader = new StreamReader(req.Body))
             {
                 requestBody = await streamReader.ReadToEndAsync();

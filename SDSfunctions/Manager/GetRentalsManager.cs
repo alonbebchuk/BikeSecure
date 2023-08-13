@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 
@@ -22,12 +20,15 @@ namespace SDS.Function
         public class Rental
         {
             public string StationName { get; set; }
+            public decimal Latitude { get; set; }
+            public decimal Longitude { get; set; }
+            public Guid LockId { get; set; }
             public string LockName { get; set; }
-            public string UserId { get; set; }
             public decimal HourlyRate { get; set; }
             public DateTime StartTime { get; set; }
             public DateTime EndTime { get; set; }
-            public TimeSpan Duration { get; set; }
+            public int DurationDays { get; set; }
+            public int DurationHours { get; set; }
             public decimal Cost { get; set; }
         }
 
@@ -51,21 +52,20 @@ namespace SDS.Function
             var rentals = new List<Rental>();
             while (await reader.ReadAsync())
             {
-                var rental = new Rental
+                rentals.Add(new Rental
                 {
                     StationName = reader.GetString(0),
-                    LockName = reader.GetString(1),
-                    UserId = reader.GetString(2),
-                    HourlyRate = reader.GetDecimal(3),
-                    StartTime = reader.GetDateTime(4)
-                };
-                if (rentalStatus == RentalStatuses.Past)
-                {
-                    rental.EndTime = reader.GetDateTime(5);
-                    rental.Duration = reader.GetTimeSpan(6);
-                    rental.Cost = reader.GetDecimal(7);
-                }
-                rentals.Add(rental);
+                    Latitude = reader.GetDecimal(1),
+                    Longitude = reader.GetDecimal(2),
+                    LockId = reader.GetGuid(3),
+                    LockName = reader.GetString(4),
+                    HourlyRate = reader.GetDecimal(5),
+                    StartTime = reader.GetDateTime(6),
+                    EndTime = reader.GetDateTime(7),
+                    DurationDays = reader.GetInt32(8),
+                    DurationHours = reader.GetInt32(9),
+                    Cost = reader.GetDecimal(10)
+                });
             }
             return new OkObjectResult(rentals);
         }

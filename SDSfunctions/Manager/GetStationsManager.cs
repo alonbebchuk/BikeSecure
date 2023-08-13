@@ -30,30 +30,28 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "manage/stations")] HttpRequest req
         )
         {
-            using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
+            using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
+            connection.Open();
+            var query = $"SELECT * FROM GetStations(NULL);";
+            using var command = new SqlCommand(query, connection);
+            using var reader = await command.ExecuteReaderAsync();
+            var stations = new List<Station>();
+            while (await reader.ReadAsync())
             {
-                connection.Open();
-                var query = $"SELECT * FROM GetStations(NULL);";
-                using var command = new SqlCommand(query, connection);
-                using var reader = await command.ExecuteReaderAsync();
-                var stations = new List<Station>();
-                while (await reader.ReadAsync())
+                stations.Add(new Station
                 {
-                    stations.Add(new Station
-                    {
-                        Id = reader.GetInt32(0),
-                        Name = reader.GetString(1),
-                        HourlyRate = reader.GetDecimal(2),
-                        Latitude = reader.GetDecimal(3),
-                        Longitude = reader.GetDecimal(4),
-                        LockCount = reader.GetInt32(5),
-                        FreeLockCount = reader.GetInt32(6),
-                        OwnedLockCount = reader.GetInt32(7),
-                        Deleted = reader.GetBoolean(8)
-                    });
-                }
-                return new OkObjectResult(stations);
+                    Id = reader.GetInt32(0),
+                    Name = reader.GetString(1),
+                    HourlyRate = reader.GetDecimal(2),
+                    Latitude = reader.GetDecimal(3),
+                    Longitude = reader.GetDecimal(4),
+                    LockCount = reader.GetInt32(5),
+                    FreeLockCount = reader.GetInt32(6),
+                    OwnedLockCount = reader.GetInt32(7),
+                    Deleted = reader.GetBoolean(8)
+                });
             }
+            return new OkObjectResult(stations);
         }
     }
 }

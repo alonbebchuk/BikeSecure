@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Security.Claims;
 using Microsoft.Data.SqlClient;
 
 namespace SDS.Function
@@ -29,6 +27,10 @@ namespace SDS.Function
             public string LockName { get; set; }
             public decimal HourlyRate { get; set; }
             public DateTime StartTime { get; set; }
+            public DateTime EndTime { get; set; }
+            public int DurationDays { get; set; }
+            public int DurationHours { get; set; }
+            public decimal Cost { get; set; }
         }
 
         [FunctionName("GetLock")]
@@ -54,9 +56,13 @@ namespace SDS.Function
                 LockName = reader.GetString(5),
                 HourlyRate = reader.GetDecimal(6)
             };
-            if (!reader.IsDBNull(7))
+            if (lockData.LockStatus == LockStatuses.Owned)
             {
                 lockData.StartTime = reader.GetDateTime(7);
+                lockData.EndTime = reader.GetDateTime(8);
+                lockData.DurationDays = reader.GetInt32(9);
+                lockData.DurationHours = reader.GetInt32(10);
+                lockData.Cost = reader.GetDecimal(11);
             }
             return new OkObjectResult(lockData);
         }

@@ -25,7 +25,7 @@ namespace SDS.Function
         )
         {
             var requestBody = string.Empty;
-            using (StreamReader streamReader = new StreamReader(req.Body))
+            using (var streamReader = new StreamReader(req.Body))
             {
                 requestBody = await streamReader.ReadToEndAsync();
             }
