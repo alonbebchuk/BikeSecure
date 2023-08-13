@@ -14,7 +14,8 @@ RETURNS @PastRentals Table
     hourly_rate DECIMAL(4,2) NOT NULL,
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
-    duration TIME NOT NULL,
+    duration_days INT NOT NULL,
+    duration_hours INT NOT NULL,
     cost DECIMAL(9,2) NOT NULL
 )
 BEGIN
@@ -31,7 +32,8 @@ BEGIN
         hourly_rate,
         start_time,
         end_time,
-        duration,
+        duration_days,
+        duration_hours,
         cost
     FROM
         Rentals

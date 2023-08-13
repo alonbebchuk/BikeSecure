@@ -6,8 +6,8 @@ CREATE OR ALTER PROCEDURE StartRental
     -- Station Secret Data
     @url NVARCHAR(MAX) OUTPUT,
     -- Lock Secret Data
-    @secret BINARY(128) OUTPUT,
-    @mac NVARCHAR(MAX) OUTPUT
+    @mac NVARCHAR(MAX) OUTPUT,
+    @secret BINARY(128) OUTPUT
 AS
 BEGIN
     DECLARE @lockStatus INT;
@@ -31,8 +31,8 @@ BEGIN
             -- Station Secret Data
             @url = url,
             -- Lock Secret Data
-            @secret = secret,
-            @mac = mac
+            @mac = mac,
+            @secret = secret
         FROM
             Locks
         WHERE

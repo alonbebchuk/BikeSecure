@@ -6,8 +6,8 @@ CREATE OR ALTER PROCEDURE EndRental
     -- Station Secret Data
     @url NVARCHAR(MAX) OUTPUT,
     -- Lock Secret Data
-    @secret BINARY(128) OUTPUT,
-    @mac NVARCHAR(MAX) OUTPUT
+    @mac NVARCHAR(MAX) OUTPUT,
+    @secret BINARY(128) OUTPUT
 AS
 BEGIN
     DECLARE @lockStatus INT;
@@ -18,6 +18,18 @@ BEGIN
         DECLARE @now DATETIME;
         SET @now = GETDATE();
 
+        WITH
+        RentalHourDifference
+        AS
+        (
+            SELECT
+                *,
+                DATEDIFF(MINUTE, start_time, @now) / 60 AS hour_difference
+            FROM
+                Locks
+            WHERE
+                id = @lock_id
+        )
         INSERT INTO Rentals
             (
             -- Station Data
@@ -33,8 +45,8 @@ BEGIN
             hourly_rate,
             start_time,
             end_time,
-            duration,
-            cost
+            duration_days,
+            duration_hours
             )
         SELECT
             -- Station Data
@@ -50,29 +62,36 @@ BEGIN
             hourly_rate,
             start_time,
             @now,
-            @now - start_time,
-            DATEDIFF(HOUR, start_time, @now) * hourly_rate
+            hour_difference / 24,
+            hour_difference % 24
         FROM
-            Locks
-        WHERE
-            id = @lock_id;
+            RentalHourDifference;
 
-        SELECT
-            -- Station Secret Data
-            @url = url,
-            -- Lock Secret Data
-            @secret = secret,
-            @mac = mac
-        FROM
-            Locks
-        WHERE
-            id = @lock_id;
+        UPDATE Locks
+            SET
+                -- Rental Data
+                user_id = NULL,
+                hourly_rate = NULL,
+                start_time = NULL
+            WHERE
+                id = @lock_id;
 
         DELETE FROM Locks
         WHERE id = @lock_id AND deleted = 1;
 
         DELETE FROM Stations
         WHERE (SELECT COUNT(*) FROM Locks WHERE station_id = Stations.id) = 0;
+
+        SELECT
+            -- Station Secret Data
+            @url = url,
+            -- Lock Secret Data
+            @mac = mac,
+            @secret = secret
+        FROM
+            Locks
+        WHERE
+            id = @lock_id;
 
         RETURN 1;
     END;
