@@ -53,6 +53,7 @@ async def send_request(req, mac, secret):
         # disconnect
         await client.stop_notify(tx_char)
         await client.disconnect()
+
     return response
 
 
@@ -64,4 +65,4 @@ if __name__ == '__main__':
             lock_secret = bytes.fromhex(lock_secret[2:])
             locks[lock_id] = {'mac': lock_mac, 'secret': lock_secret}
 
-    app.run(host='0.0.0.0', port=5000, debug=True)# , ssl_context='adhoc')
+    app.run(host='0.0.0.0', port=5000, debug=True)  # , ssl_context='adhoc')
