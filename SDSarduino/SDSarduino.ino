@@ -25,8 +25,6 @@ void setup() {
 
   ble.sendCommandCheckOK("AT+HWModeLED=MANUAL,OFF");
   ble.setMode(BLUEFRUIT_MODE_DATA);
-
-  Serial.println("Started");
 }
 
 void loop() {
@@ -36,7 +34,6 @@ void loop() {
 
   randomSeed(millis());
   uint32_t challenge = random(min(RANDOM_MAX, UINT32_MAX));
-  Serial.println(challenge);
 
   while(!ble.available()) {
     ble.print(challenge);
@@ -48,10 +45,7 @@ void loop() {
   uint8_t response[HASH_SIZE];
   ble.readBLEUart(response, HASH_SIZE);
   if (!verifyHMAC(challenge, response)) {
-    Serial.println("Verification Failed");
     while(1);
-  } else {
-    Serial.println("Verification Succeeded");
   }
 
   delay(1000);
