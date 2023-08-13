@@ -9,15 +9,22 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace SDS.Function
 {
     public static class SignRentalRequest
     {
-        public enum RentalRequest
+        public enum RentalFunctions
         {
-            Start = 1,
-            End = 0
+            EndRental = 0,
+            StartRental = 1
+        }
+
+        public class RentalRequest
+        {
+            public Guid LockId { get; set; }
+            public int RequestCode { get; set; }
         }
 
         public class SignedRentalRequest
@@ -33,13 +40,17 @@ namespace SDS.Function
 
         [FunctionName("SignRentalRequest")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "rentals/{request:alpha}/{lockId:guid}")] HttpRequest req,
-            string request,
-            Guid lockId
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "rentals/action")] HttpRequest req
         )
         {
-            if (!Enum.TryParse<RentalRequest>(request, true, out var rentalRequest))
+            var requestBody = string.Empty;
+            using (var streamReader = new StreamReader(req.Body))
             {
+                requestBody = await streamReader.ReadToEndAsync();
+            }
+            var rentalRequest = JsonConvert.DeserializeObject<RentalRequest>(requestBody);
+            
+            if (!Enum.IsDefined(typeof(RentalFunctions), rentalRequest.RequestCode)) {
                 return new BadRequestResult();
             }
 
@@ -49,10 +60,10 @@ namespace SDS.Function
             var declarations = @"
                 DECLARE @res BIT;
                 DECLARE @url NVARCHAR(MAX);
-                DECLARE @secret BINARY(128);
                 DECLARE @mac NVARCHAR(MAX);
+                DECLARE @secret BINARY(128);
             ";
-            var procedure = $"EXEC @res = {rentalRequest}Rental '{sid}', '{lockId}', @url OUTPUT, @secret OUTPUT, @mac OUTPUT;";
+            var procedure = $"EXEC @res = {(RentalFunctions)rentalRequest.RequestCode} '{sid}', '{rentalRequest.LockId}', @url OUTPUT, @mac OUTPUT, @secret OUTPUT;";
             var select = "SELECT @res, @url, @secret, @mac;";
             var query = declarations + procedure + select;
             using var command = new SqlCommand(query, connection);
@@ -61,28 +72,31 @@ namespace SDS.Function
             var res = reader.GetBoolean(0);
             if (res)
             {
-                var url = reader.GetString(1);
-                var secret = new byte[128];
-                reader.GetBytes(2, 0, secret, 0, 128);
-                var mac = reader.GetString(3);
-                var requestCode = (int)rentalRequest;
-                var requestDateTime = DateTime.UtcNow;
-                
-                using var hmac = new HMACSHA512(secret);
-                var signature = await hmac.ComputeHashAsync(
-                    new MemoryStream(Encoding.UTF8.GetBytes(sid + lockId + url + mac + requestCode + requestDateTime))
-                );
-
                 var signedRentalRequest = new SignedRentalRequest
                 {
                     UserId = sid,
-                    LockId = lockId,
-                    Url = url,
-                    Mac = mac,
-                    RequestCode = requestCode,
-                    RequestDateTime = requestDateTime,
-                    Signature = signature
+                    LockId = rentalRequest.LockId,
+                    Url = reader.GetString(1),
+                    Mac = reader.GetString(3),
+                    RequestCode = rentalRequest.RequestCode,
+                    RequestDateTime = DateTime.UtcNow
                 };
+
+                var secret = new byte[128];
+                reader.GetBytes(2, 0, secret, 0, 128);
+                using var hmac = new HMACSHA512(secret);
+                signedRentalRequest.Signature = await hmac.ComputeHashAsync(
+                    new MemoryStream(
+                        Encoding.UTF8.GetBytes(
+                            signedRentalRequest.UserId +
+                            signedRentalRequest.LockId +
+                            signedRentalRequest.Url +
+                            signedRentalRequest.Mac +
+                            signedRentalRequest.RequestCode +
+                            signedRentalRequest.RequestDateTime
+                        )
+                    )
+                );
 
                 return new OkObjectResult(signedRentalRequest);
             }
