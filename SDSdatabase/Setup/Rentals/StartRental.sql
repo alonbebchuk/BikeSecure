@@ -6,7 +6,7 @@ CREATE OR ALTER PROCEDURE StartRental
     -- Station Secret Data
     @url NVARCHAR(MAX) OUTPUT,
     -- Lock Secret Data
-    @secret BINARY(512) OUTPUT,
+    @secret BINARY(128) OUTPUT,
     @mac NVARCHAR(MAX) OUTPUT
 AS
 BEGIN

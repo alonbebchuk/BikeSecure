@@ -32,7 +32,7 @@ CREATE TABLE Locks
     -- Lock Data
     name NVARCHAR(MAX) NOT NULL,
     -- Lock Secret Data
-    secret BINARY(512) NOT NULL DEFAULT CRYPT_GEN_RANDOM(512),
+    secret BINARY(128) NOT NULL DEFAULT CRYPT_GEN_RANDOM(128),
     mac NVARCHAR(MAX) NOT NULL,
     -- Rental Data
     user_id NVARCHAR(MAX),
