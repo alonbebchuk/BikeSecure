@@ -10,37 +10,27 @@ CREATE OR ALTER PROCEDURE StartRental
     @secret BINARY(128) OUTPUT
 AS
 BEGIN
-    DECLARE @lockStatus INT;
-    SELECT @lockStatus = [dbo].[GetLockStatus](@user_id, @lock_id);
+    DECLARE @now DATETIME;
+    SET @now = GETDATE();
 
-    IF @lockStatus = 0
-    BEGIN
-        DECLARE @now DATETIME;
-        SET @now = GETDATE();
-
-        UPDATE Locks
-            SET
-                -- Rental Data
-                user_id = @user_id,
-                hourly_rate = station_hourly_rate,
-                start_time = @now
-            WHERE
-                id = @lock_id;
-
-        SELECT
-            -- Station Secret Data
-            @url = url,
-            -- Lock Secret Data
-            @mac = mac,
-            @secret = secret
-        FROM
-            Locks
+    UPDATE Locks
+        SET
+            -- Rental Data
+            user_id = @user_id,
+            hourly_rate = station_hourly_rate,
+            start_time = @now
         WHERE
             id = @lock_id;
 
-        RETURN 1;
-    END;
-
-    RETURN 0;
+    SELECT
+        -- Station Secret Data
+        @url = url,
+        -- Lock Secret Data
+        @mac = mac,
+        @secret = secret
+    FROM
+        Locks
+    WHERE
+        id = @lock_id;
 END;
 GO

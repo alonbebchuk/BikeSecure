@@ -45,7 +45,7 @@ CREATE TABLE Locks
 -- Rental Table
 CREATE TABLE Rentals
 (
-    id INT IDENTITY (1, 1) PRIMARY KEY, -- NOT USED
+    id INT IDENTITY (1, 1) PRIMARY KEY,
     -- Station Data
     station_id INT FOREIGN KEY REFERENCES Stations(id) ON DELETE SET NULL,
     station_name NVARCHAR(MAX) NOT NULL,

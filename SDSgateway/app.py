@@ -2,10 +2,13 @@ import asyncio
 import csv
 import hmac
 import struct
+import sys
 from hashlib import sha512
+import pandas as pd
+from datetime import datetime, timezone
 
 from bleak import BleakClient
-from flask import Flask
+from flask import Flask, request
 
 UART_SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
 UART_RX_CHAR_UUID = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
@@ -13,16 +16,48 @@ UART_TX_CHAR_UUID = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
 UART_CHUNK_SIZE = 20
 
 FILENAME = "locks.csv"
+URL = "https://57f1-2a10-8012-f-2fc6-748c-c7f9-e7b2-f853.ngrok-free.app"
 
 app = Flask(__name__)
 locks = {}
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 async def rental_action():
-    # TODO: verify request and signature
-    lock = locks['1']
-    response = await send_request('0', lock['mac'], lock['secret'])
+    print(request.json, file=sys.stderr)
+    if list(request.json.keys()) != ['userId', 'lockId', 'url', 'mac', 'requestCode', 'requestDateTime', 'signature']:
+        print(request.json.keys(), file=sys.stderr)
+        return ('BadRequest', 400)
+
+    lock_id = request.json['lockId']
+    if lock_id not in locks.keys():
+        print(lock_id, file=sys.stderr)
+        return ('BadRequest', 400)
+    lock = locks[lock_id]
+
+    # anti-replay
+    requestedDateTime = pd.to_datetime(request.json['requestDateTime'])
+    if (datetime.now(timezone.utc) - requestedDateTime).seconds > 10:
+        print(requestedDateTime, file=sys.stderr)
+        return ('BadRequest', 400)
+
+    # message integrity
+    message = (
+            request.json['userId'] +
+            lock_id +
+            URL +
+            lock['mac'] +
+            str(request.json['requestCode']) +
+            request.json['requestDateTime']
+    )
+    signature = request.json['signature']
+    expected_signature = hmac.new(lock['secret'], message.encode(), sha512).digest().hex()
+    if signature != expected_signature:
+        print(signature, file=sys.stderr)
+        print(expected_signature, file=sys.stderr)
+        return ('BadRequest', 400)
+
+    response = await send_request(request.json['requestCode'], lock['mac'], lock['secret'])
     return ('Success', 200) if response == 0 else ('Failure', 500)
 
 
@@ -65,4 +100,4 @@ if __name__ == '__main__':
             lock_secret = bytes.fromhex(lock_secret[2:])
             locks[lock_id] = {'mac': lock_mac, 'secret': lock_secret}
 
-    app.run(host='0.0.0.0', port=5000, debug=True)  # , ssl_context='adhoc')
+    app.run(host='127.0.0.1', port=5000, debug=True)  # , ssl_context='adhoc')

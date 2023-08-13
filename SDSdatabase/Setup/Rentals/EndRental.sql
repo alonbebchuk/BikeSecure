@@ -10,15 +10,10 @@ CREATE OR ALTER PROCEDURE EndRental
     @secret BINARY(128) OUTPUT
 AS
 BEGIN
-    DECLARE @lockStatus INT;
-    SELECT @lockStatus = [dbo].[GetLockStatus](@user_id, @lock_id);
+    DECLARE @now DATETIME;
+    SET @now = GETDATE();
 
-    IF @lockStatus = 1
-    BEGIN
-        DECLARE @now DATETIME;
-        SET @now = GETDATE();
-
-        WITH
+    WITH
         RentalHourDifference
         AS
         (
@@ -30,44 +25,44 @@ BEGIN
             WHERE
                 id = @lock_id
         )
-        INSERT INTO Rentals
-            (
-            -- Station Data
-            station_id,
-            station_name,
-            latitude,
-            longitude,
-            -- Lock Data
-            lock_id,
-            lock_name,
-            -- Rental Data
-            user_id,
-            hourly_rate,
-            start_time,
-            end_time,
-            duration_days,
-            duration_hours
-            )
-        SELECT
-            -- Station Data
-            station_id,
-            station_name,
-            latitude,
-            longitude,
-            -- Lock Data
-            id,
-            name,
-            -- Rental Data
-            user_id,
-            hourly_rate,
-            start_time,
-            @now,
-            hour_difference / 24,
-            hour_difference % 24
-        FROM
-            RentalHourDifference;
+    INSERT INTO Rentals
+        (
+        -- Station Data
+        station_id,
+        station_name,
+        latitude,
+        longitude,
+        -- Lock Data
+        lock_id,
+        lock_name,
+        -- Rental Data
+        user_id,
+        hourly_rate,
+        start_time,
+        end_time,
+        duration_days,
+        duration_hours
+        )
+    SELECT
+        -- Station Data
+        station_id,
+        station_name,
+        latitude,
+        longitude,
+        -- Lock Data
+        id,
+        name,
+        -- Rental Data
+        user_id,
+        hourly_rate,
+        start_time,
+        @now,
+        hour_difference / 24,
+        hour_difference % 24
+    FROM
+        RentalHourDifference;
 
-        UPDATE Locks
+    UPDATE Locks
             SET
                 -- Rental Data
                 user_id = NULL,
@@ -76,26 +71,27 @@ BEGIN
             WHERE
                 id = @lock_id;
 
-        DELETE FROM Locks
+    DELETE FROM Locks
         WHERE id = @lock_id AND deleted = 1;
 
-        DELETE FROM Stations
-        WHERE (SELECT COUNT(*) FROM Locks WHERE station_id = Stations.id) = 0;
+    DELETE FROM Stations
+        WHERE (
+            SELECT COUNT(*)
+            FROM Locks
+            WHERE station_id = Stations.id
+        ) = 0;
 
-        SELECT
-            -- Station Secret Data
-            @url = url,
-            -- Lock Secret Data
-            @mac = mac,
-            @secret = secret
-        FROM
-            Locks
-        WHERE
-            id = @lock_id;
+    SELECT
+        -- Station Secret Data
+        @url = url,
+        -- Lock Secret Data
+        @mac = mac,
+        @secret = secret
+    FROM
+        Locks
+    WHERE
+        id = @lock_id;
 
-        RETURN 1;
-    END;
-
-    RETURN 0;
+    RETURN 1;
 END;
 GO

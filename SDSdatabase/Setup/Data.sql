@@ -35,13 +35,36 @@ INSERT INTO Locks
     name,
     -- Lock Secret Data
     mac,
+    secret,
     -- Rental Data
     user_id,
     hourly_rate,
     start_time
     )
 VALUES
-    ('29E351E1-609F-43B6-96D4-631AF7458F27', 1, 'Rothschild Boulevard 1', 8.50, 32.065920, 34.773546, 'rothschild1_url', 'Lock A', '00:1A:2B:3C:4D:5E', 'user_413046ae5f07424db6ba9da0c4340a24', 8.50, '2023-08-10 14:30:00'),
+    ('29E351E1-609F-43B6-96D4-631AF7458F27', 1, 'Rothschild Boulevard 1', 8.50, 32.065920, 34.773546, 'https://57f1-2a10-8012-f-2fc6-748c-c7f9-e7b2-f853.ngrok-free.app', 'Lock A', 'EA:75:4A:ED:BC:4F', CONVERT(binary(128), '0x3078373333314134463838313143394343303434413131353645424439433345423333313233354145324531333541423830374338343846464537343734363930303331374536353034383139413944304131354233303639443945444438383642363334443941464443443344343038304436393234364439443438343641'), 'user_413046ae5f07424db6ba9da0c4340a24', 8.50, '2023-08-10 14:30:00');
+
+INSERT INTO Locks
+    (
+    id,
+    -- Station Data
+    station_id,
+    station_name,
+    station_hourly_rate,
+    latitude,
+    longitude,
+    -- Station Secret Data
+    url,
+    -- Lock Data
+    name,
+    -- Lock Secret Data
+    mac,
+    -- Rental Data
+    user_id,
+    hourly_rate,
+    start_time
+    )
+VALUES
     (NEWID(), 1, 'Rothschild Boulevard 1', 8.50, 32.065920, 34.773546, 'rothschild1_url', 'Lock B', '00:1A:2B:3C:4D:5F', NULL, NULL, NULL),
     (NEWID(), 1, 'Rothschild Boulevard 1', 8.50, 32.065920, 34.773546, 'rothschild1_url', 'Lock C', '00:1A:2B:3C:4D:6A', 'user123', 8.50, DATEADD(HOUR, 1, '2023-08-10 14:30:00')),
     ('99B4BBB2-751F-43DD-AEA9-7F7D10C0C914', 2, 'Allenby Street 23', 9.75, 32.071081, 34.770131, 'allenby23_url', 'Lock A', '00:1A:2B:3C:4D:7E', 'user123', 9.75, DATEADD(HOUR, 2, '2023-08-10 14:30:00')),

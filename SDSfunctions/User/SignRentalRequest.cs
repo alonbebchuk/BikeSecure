@@ -35,7 +35,7 @@ namespace SDS.Function
             public string Mac { get; set; }
             public int RequestCode { get; set; }
             public DateTime RequestDateTime { get; set; }
-            public byte[] Signature { get; set; }
+            public string Signature { get; set; }
         }
 
         [FunctionName("SignRentalRequest")]
@@ -49,7 +49,7 @@ namespace SDS.Function
                 requestBody = await streamReader.ReadToEndAsync();
             }
             var rentalRequest = JsonConvert.DeserializeObject<RentalRequest>(requestBody);
-            
+
             if (!Enum.IsDefined(typeof(RentalFunctions), rentalRequest.RequestCode)) {
                 return new BadRequestResult();
             }
@@ -58,49 +58,44 @@ namespace SDS.Function
             using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
             connection.Open();
             var declarations = @"
-                DECLARE @res BIT;
                 DECLARE @url NVARCHAR(MAX);
                 DECLARE @mac NVARCHAR(MAX);
                 DECLARE @secret BINARY(128);
             ";
-            var procedure = $"EXEC @res = {(RentalFunctions)rentalRequest.RequestCode} '{sid}', '{rentalRequest.LockId}', @url OUTPUT, @mac OUTPUT, @secret OUTPUT;";
-            var select = "SELECT @res, @url, @secret, @mac;";
+            var procedure = $"EXEC {(RentalFunctions)rentalRequest.RequestCode} '{sid}', '{rentalRequest.LockId}', @url OUTPUT, @mac OUTPUT, @secret OUTPUT;";
+            var select = "SELECT @url, @secret, @mac;";
             var query = declarations + procedure + select;
             using var command = new SqlCommand(query, connection);
             using var reader = await command.ExecuteReaderAsync();
             await reader.ReadAsync();
-            var res = reader.GetBoolean(0);
-            if (res)
+            var signedRentalRequest = new SignedRentalRequest
             {
-                var signedRentalRequest = new SignedRentalRequest
-                {
-                    UserId = sid,
-                    LockId = rentalRequest.LockId,
-                    Url = reader.GetString(1),
-                    Mac = reader.GetString(3),
-                    RequestCode = rentalRequest.RequestCode,
-                    RequestDateTime = DateTime.UtcNow
-                };
+                UserId = sid,
+                LockId = rentalRequest.LockId,
+                Url = reader.GetString(0),
+                Mac = reader.GetString(2),
+                RequestCode = rentalRequest.RequestCode,
+                RequestDateTime = DateTime.UtcNow
+            };
 
-                var secret = new byte[128];
-                reader.GetBytes(2, 0, secret, 0, 128);
-                using var hmac = new HMACSHA512(secret);
-                signedRentalRequest.Signature = await hmac.ComputeHashAsync(
-                    new MemoryStream(
-                        Encoding.UTF8.GetBytes(
-                            signedRentalRequest.UserId +
-                            signedRentalRequest.LockId +
-                            signedRentalRequest.Url +
-                            signedRentalRequest.Mac +
-                            signedRentalRequest.RequestCode +
-                            signedRentalRequest.RequestDateTime
-                        )
+            var secret = new byte[128];
+            reader.GetBytes(1, 0, secret, 0, 128);
+            using var hmac = new HMACSHA512(secret);
+            var signatureBytes = await hmac.ComputeHashAsync(
+                new MemoryStream(
+                    Encoding.UTF8.GetBytes(
+                        signedRentalRequest.UserId +
+                        signedRentalRequest.LockId +
+                        signedRentalRequest.Url +
+                        signedRentalRequest.Mac +
+                        signedRentalRequest.RequestCode +
+                        signedRentalRequest.RequestDateTime.ToString("O")
                     )
-                );
+                )
+            );
+            signedRentalRequest.Signature = BitConverter.ToString(signatureBytes).Replace("-", "").ToLower();
 
-                return new OkObjectResult(signedRentalRequest);
-            }
-            return new BadRequestResult();
+            return new OkObjectResult(signedRentalRequest);
         }
     }
 }
