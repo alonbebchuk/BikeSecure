@@ -1,0 +1,17 @@
+{
+  "CurrentRentalDetails": {},
+  "CurrentRentalTitle": {},
+  "CurrentRentals": {},
+  "DirectionsButton": {},
+  "EndRentalButton": {},
+  "Map": { "height": 0, "width": 0 },
+  "NewRentalDetails": {},
+  "NewRentalTitle": {},
+  "PastRentalDetails": {},
+  "PastRentalTitle": {},
+  "PastRentals": {},
+  "Scanner": {},
+  "SearchStation": {},
+  "StartRentalButton": { "height": 0, "width": 0 },
+  "Stations": {}
+}

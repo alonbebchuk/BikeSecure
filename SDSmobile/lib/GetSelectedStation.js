@@ -1,0 +1,1 @@
+return GetStations.data.filter((station) => station.latitude == Map.selectedPoint.latitude && station.longitude == Map.selectedPoint.longitude)[0];

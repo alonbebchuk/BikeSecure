@@ -1,0 +1,1 @@
+return `https://www.google.com/maps/dir/${GetLocation.data.latitude},${GetLocation.data.longitude}/${Map.selectedPoint.latitude},${Map.selectedPoint.longitude}/`;

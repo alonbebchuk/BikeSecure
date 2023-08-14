@@ -1,0 +1,22 @@
+{
+  "toolscriptVersion": "1.0.0",
+  "version": "43.0.9",
+  "pageUuid": "",
+  "appTemplate": {
+    "appThemeId": 23897,
+    "experimentalFeatures": {
+      "object": {
+        "sourceControlTemplateDehydration": false,
+        "multiplayerEditingEnabled": false
+      }
+    },
+    "experimentalPerfFeatures": {
+      "object": { "useRuntimeV2": true, "runtimeV2OptOut": false }
+    },
+    "rootScreen": "tabscreen",
+    "isMobileApp": true,
+    "version": "3.8.0",
+    "multiScreenMobileApp": true,
+    "experimentalDataTabEnabled": true
+  }
+}

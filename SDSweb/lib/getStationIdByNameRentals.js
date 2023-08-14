@@ -1,0 +1,1 @@
+return getStations.data.filter((station) => station.name == stationRentalsSelect.value)['0'].id;

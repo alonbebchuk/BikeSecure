@@ -1,0 +1,442 @@
+{
+  "CurrentHourlyRateForm": {
+    "container": "setHourlyRateForm",
+    "height": 0.6,
+    "width": 11
+  },
+  "LocksOccupancyTitle": {
+    "container": "locksOverviewContainer",
+    "subcontainer": "39a35",
+    "row": 6,
+    "height": 0.6,
+    "width": 5
+  },
+  "Map": {
+    "container": "mapViewContainer",
+    "subcontainer": "39a35",
+    "height": 8.6,
+    "width": 12
+  },
+  "addLockButton": {
+    "container": "stationAndLockManagementContainer",
+    "subcontainer": "39a35",
+    "row": 8.2,
+    "height": 1.8,
+    "width": 6
+  },
+  "addLockForm": { "container": "addLockButton", "height": 2, "width": 12 },
+  "addLockFormTitle": {
+    "container": "addLockForm",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "addNewStationButton": {
+    "container": "stationAndLockManagementContainer",
+    "subcontainer": "39a35",
+    "row": 0,
+    "height": 1.8,
+    "width": 12
+  },
+  "addNewStationForm": {
+    "container": "addNewStationButton",
+    "height": 2,
+    "width": 12
+  },
+  "addNewStationForm2": {
+    "container": "deployButton",
+    "height": 2,
+    "width": 12
+  },
+  "addNewStationFormTitle": {
+    "container": "addNewStationForm",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "addNewStationFormTitle2": {
+    "container": "addNewStationForm2",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "button1": {
+    "container": "getLocksStatusForm",
+    "row": 0.6,
+    "col": 4,
+    "height": 1,
+    "width": 5
+  },
+  "centerMapButton": {
+    "container": "mapViewContainer",
+    "subcontainer": "39a35",
+    "row": 8.6,
+    "col": 10,
+    "height": 3.2,
+    "width": 2
+  },
+  "currentRentalsTab": {
+    "container": "tabbedContainerCurrentOrAllRentals",
+    "rowGroup": "header",
+    "height": 0.8,
+    "width": 12
+  },
+  "currentRentalsTable": {
+    "container": "tabbedContainerCurrentOrAllRentals",
+    "subcontainer": "45d7d",
+    "height": 7.8,
+    "width": 12
+  },
+  "deleteLockButton": {
+    "container": "stationAndLockManagementContainer",
+    "subcontainer": "39a35",
+    "row": 8.2,
+    "col": 6,
+    "height": 1.8,
+    "width": 6
+  },
+  "deleteLockForm": {
+    "container": "deleteLockButton",
+    "height": 2,
+    "width": 12
+  },
+  "deleteLockFormTitle": {
+    "container": "deleteLockForm",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "deleteStationButton": {
+    "container": "stationAndLockManagementContainer",
+    "subcontainer": "39a35",
+    "row": 10,
+    "height": 1.8,
+    "width": 12
+  },
+  "deleteStationForm": {
+    "container": "deleteStationButton",
+    "height": 2,
+    "width": 12
+  },
+  "deleteStationFormTitle": {
+    "container": "deleteStationForm",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "deployButton": {
+    "container": "stationAndLockManagementContainer",
+    "subcontainer": "39a35",
+    "row": 2.8,
+    "height": 1.8,
+    "width": 12
+  },
+  "divider1": { "row": 2, "height": 0.2, "width": 12 },
+  "divider2": { "row": 2.4, "height": 0.2, "width": 12 },
+  "divider3": { "row": 2.8, "height": 0.2, "width": 12 },
+  "getLocksStatusButton": {
+    "container": "stationAndLockManagementContainer",
+    "subcontainer": "39a35",
+    "row": 6.4,
+    "height": 1.8,
+    "width": 12
+  },
+  "getLocksStatusForm": {
+    "container": "getLocksStatusButton",
+    "height": 2,
+    "width": 12
+  },
+  "getLocksStatusText": {
+    "container": "getLocksStatusForm",
+    "height": 0.6,
+    "width": 12
+  },
+  "getLocksStatusTitle": {
+    "container": "getLocksStatusForm",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "hourlyRateInput": {
+    "container": "addNewStationForm",
+    "rowGroup": "header",
+    "row": 4.6,
+    "height": 1,
+    "width": 12
+  },
+  "linkCard1": {
+    "container": "mapViewContainer",
+    "subcontainer": "39a35",
+    "row": 8.6,
+    "height": 0.2,
+    "width": 10
+  },
+  "locationLatitudeInput": {
+    "container": "addNewStationForm",
+    "rowGroup": "header",
+    "row": 2.6,
+    "height": 1,
+    "width": 12
+  },
+  "locationLongitudeInput": {
+    "container": "addNewStationForm",
+    "rowGroup": "header",
+    "row": 3.6,
+    "height": 1,
+    "width": 12
+  },
+  "lockDistributionTitle": {
+    "container": "locksOverviewContainer",
+    "subcontainer": "39a35",
+    "row": 6,
+    "col": 5,
+    "height": 0.6,
+    "width": 5
+  },
+  "lockMacInput": {
+    "container": "addLockForm",
+    "row": 1,
+    "height": 1,
+    "width": 12
+  },
+  "lockNameInput": { "container": "addLockForm", "height": 1, "width": 12 },
+  "locksDivision": {
+    "container": "locksOverviewContainer",
+    "subcontainer": "39a35",
+    "row": 7.2,
+    "col": 5,
+    "height": 6.2,
+    "width": 7
+  },
+  "locksOverviewContainer": { "row": 2.6, "height": 0.2, "width": 12 },
+  "locksOverviewStatisticsTable": {
+    "container": "locksOverviewContainer",
+    "subcontainer": "39a35",
+    "row": 7.6,
+    "height": 1,
+    "width": 5
+  },
+  "locksOverviewTable": {
+    "container": "locksOverviewContainer",
+    "subcontainer": "39a35",
+    "row": 1,
+    "height": 1,
+    "width": 12
+  },
+  "locksOverviewTitle": {
+    "container": "locksOverviewContainer",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "locksTechnicalDetailsTable2": {
+    "container": "addNewStationForm2",
+    "height": 4.8,
+    "width": 12
+  },
+  "mapViewContainer": { "height": 0.2, "width": 8 },
+  "mapViewContainerTitle": {
+    "container": "mapViewContainer",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "navigationOptions": {
+    "subcontainer": "sidebarFrame1",
+    "row": 1.6,
+    "height": 0.8,
+    "width": 1
+  },
+  "newHourlyRateInput": {
+    "container": "setHourlyRateForm",
+    "row": 1,
+    "height": 1,
+    "width": 11
+  },
+  "openDirectionsButton": {
+    "container": "linkCard1",
+    "row": 1.2,
+    "col": 6,
+    "height": 0.6,
+    "width": 4
+  },
+  "parkingIcon": {
+    "container": "linkCard1",
+    "row": 0.6,
+    "col": 10,
+    "height": 1.8,
+    "width": 2
+  },
+  "pastRentalsTable": {
+    "container": "tabbedContainerCurrentOrAllRentals",
+    "subcontainer": "e791e",
+    "height": 7.8,
+    "width": 12
+  },
+  "progressBar1": {
+    "container": "locksOverviewContainer",
+    "subcontainer": "39a35",
+    "row": 7.2,
+    "height": 0.4,
+    "width": 5
+  },
+  "rentalsContainer": { "row": 3, "height": 0.2, "width": 12 },
+  "rentalsContainerTitle": {
+    "container": "rentalsContainer",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "selectLockOptions": {
+    "container": "deleteLockForm",
+    "height": 1,
+    "width": 12
+  },
+  "setHourlyRateButton": {
+    "container": "stationAndLockManagementContainer",
+    "subcontainer": "39a35",
+    "row": 4.6,
+    "height": 1.8,
+    "width": 12
+  },
+  "setHourlyRateForm": {
+    "container": "setHourlyRateButton",
+    "height": 2,
+    "width": 12
+  },
+  "setHourlyRateTitle": {
+    "container": "setHourlyRateForm",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "sidebarTitle": {
+    "rowGroup": "header",
+    "subcontainer": "sidebarFrame1",
+    "row": 0.8,
+    "height": 0.6,
+    "width": 1
+  },
+  "stationAndLockManagementContainer": {
+    "row": 0,
+    "col": 8,
+    "height": 2,
+    "width": 4
+  },
+  "stationAndLockManagementTitle": {
+    "container": "stationAndLockManagementContainer",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "stationDetailsLinkCard": {
+    "container": "linkCard1",
+    "row": 0.6,
+    "height": 0.6,
+    "width": 6
+  },
+  "stationLocksSelect": {
+    "container": "locksOverviewContainer",
+    "subcontainer": "39a35",
+    "height": 1,
+    "width": 12
+  },
+  "stationManagementSelect": {
+    "container": "stationAndLockManagementContainer",
+    "subcontainer": "39a35",
+    "row": 1.8,
+    "height": 1,
+    "width": 12
+  },
+  "stationNameInput": {
+    "container": "addNewStationForm",
+    "rowGroup": "header",
+    "row": 0.6,
+    "height": 1,
+    "width": 12
+  },
+  "stationNameLinkCard": {
+    "container": "linkCard1",
+    "height": 0.6,
+    "width": 6
+  },
+  "stationRentalsSelect": {
+    "container": "rentalsContainer",
+    "subcontainer": "39a35",
+    "height": 1,
+    "width": 12
+  },
+  "stationUrlInput": {
+    "container": "addNewStationForm",
+    "rowGroup": "header",
+    "row": 1.6,
+    "height": 1,
+    "width": 12
+  },
+  "stationsOverviewContainer": { "row": 2.2, "height": 0.2, "width": 12 },
+  "stationsOverviewContainerTitle": {
+    "container": "stationsOverviewContainer",
+    "rowGroup": "header",
+    "height": 0.6,
+    "width": 12
+  },
+  "stationsOverviewTable": {
+    "container": "stationsOverviewContainer",
+    "subcontainer": "39a35",
+    "height": 7.8,
+    "width": 12
+  },
+  "submitLockDeletion": {
+    "container": "deleteLockForm",
+    "row": 1,
+    "col": 4,
+    "height": 1,
+    "width": 4
+  },
+  "submitNewHourlyRate": {
+    "container": "setHourlyRateForm",
+    "row": 2,
+    "col": 4,
+    "height": 1,
+    "width": 5
+  },
+  "submitNewLock": {
+    "container": "addLockForm",
+    "row": 2,
+    "col": 4,
+    "height": 1,
+    "width": 4
+  },
+  "submitNewStation": {
+    "container": "addNewStationForm",
+    "col": 4,
+    "height": 1,
+    "width": 4
+  },
+  "submitStationDeletion": {
+    "container": "deleteStationForm",
+    "col": 3,
+    "height": 1,
+    "width": 5
+  },
+  "tabbedContainerCurrentOrAllRentals": {
+    "container": "rentalsContainer",
+    "subcontainer": "39a35",
+    "row": 1,
+    "height": 0.2,
+    "width": 12
+  },
+  "text1": {
+    "container": "addNewStationForm2",
+    "row": 4.8,
+    "height": 0.6,
+    "width": 12
+  },
+  "userDetails": {
+    "subcontainer": "header",
+    "col": 10,
+    "height": 0.2,
+    "width": 2
+  },
+  "websiteTitle": { "subcontainer": "header", "height": 0.6 }
+}
