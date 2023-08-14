@@ -48,8 +48,6 @@ namespace SDS.Function
                 return new BadRequestResult();
             }
 
-            var sid = req.Headers["sid"];
-
             var requestBody = string.Empty;
             using (var streamReader = new StreamReader(req.Body))
             {
@@ -57,11 +55,12 @@ namespace SDS.Function
             }
             var rentalRequest = JsonConvert.DeserializeObject<RentalRequest>(requestBody);
 
-            if (!Enum.IsDefined(typeof(RentalFunctions), rentalRequest.RequestCode)) {
+            if (!Enum.IsDefined(typeof(RentalFunctions), rentalRequest.RequestCode))
+            {
                 return new BadRequestResult();
             }
 
-            var sid = "user_413046ae5f07424db6ba9da0c4340a24";
+            var sid = req.Headers["sid"];
             using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
             connection.Open();
             var declarations = @"

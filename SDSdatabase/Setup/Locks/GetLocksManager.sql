@@ -6,6 +6,8 @@ RETURNS @Locks Table
     -- Lock Data
     lock_id UNIQUEIDENTIFIER NOT NULL,
     lock_name NVARCHAR(MAX) NOT NULL,
+    -- Lock Secret Data
+    lock_secret BINARY(128) NOT NULL,
     -- Rental Data
     user_id NVARCHAR(MAX),
     -- Soft Delete Flag
@@ -17,6 +19,8 @@ BEGIN
         -- Lock Data
         id,
         name,
+        -- Lock Secret Data
+        secret,
         -- Rental Data
         user_id,
         deleted
