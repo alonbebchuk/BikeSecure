@@ -7,6 +7,7 @@ RETURNS @Locks Table
     lock_id UNIQUEIDENTIFIER NOT NULL,
     lock_name NVARCHAR(MAX) NOT NULL,
     -- Lock Secret Data
+    lock_mac NVARCHAR(MAX) NOT NULL,
     lock_secret BINARY(128) NOT NULL,
     -- Rental Data
     user_id NVARCHAR(MAX),
@@ -20,6 +21,7 @@ BEGIN
         id,
         name,
         -- Lock Secret Data
+        mac,
         secret,
         -- Rental Data
         user_id,
