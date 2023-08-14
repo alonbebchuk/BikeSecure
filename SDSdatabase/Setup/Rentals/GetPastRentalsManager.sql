@@ -5,7 +5,10 @@ RETURNS @PastRentals Table
 (
     -- Station Data
     station_name NVARCHAR(MAX) NOT NULL,
+    latitude DECIMAL(9,6) NOT NULL,
+    longitude DECIMAL(9,6) NOT NULL,
     -- Lock Data
+    lock_id UNIQUEIDENTIFIER NOT NULL,
     lock_name NVARCHAR(MAX) NOT NULL,
     -- Rental Data
     user_id NVARCHAR(MAX) NOT NULL,
@@ -19,9 +22,11 @@ RETURNS @PastRentals Table
 BEGIN
     INSERT INTO @PastRentals
     SELECT
-        -- Station Data
         station_name,
+        latitude,
+        longitude,
         -- Lock Data
+        lock_id,
         lock_name,
         -- Rental Data
         user_id,
