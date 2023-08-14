@@ -91,7 +91,5 @@ BEGIN
         Locks
     WHERE
         id = @lock_id;
-
-    RETURN 1;
 END;
 GO
