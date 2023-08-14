@@ -8,7 +8,7 @@ RETURNS @Locks Table
     lock_name NVARCHAR(MAX) NOT NULL,
     -- Lock Secret Data
     lock_mac NVARCHAR(MAX) NOT NULL,
-    lock_secret BINARY(128) NOT NULL,
+    lock_secret VARCHAR(MAX) NOT NULL,
     -- Rental Data
     user_id NVARCHAR(MAX),
     -- Soft Delete Flag
@@ -22,7 +22,7 @@ BEGIN
         name,
         -- Lock Secret Data
         mac,
-        secret,
+        sys.fn_varbintohexstr(secret),
         -- Rental Data
         user_id,
         deleted

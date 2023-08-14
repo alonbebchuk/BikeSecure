@@ -16,7 +16,7 @@ namespace SDS.Function
             public Guid LockId { get; set; }
             public string LockName { get; set; }
             public string LockMac { get; set; }
-            public byte[] LockSecret { get; set; }
+            public string LockSecret { get; set; }
             public string UserId { get; set; }
             public bool Deleted { get; set; }
         }
@@ -40,16 +40,15 @@ namespace SDS.Function
             var locks = new List<Lock>();
             while (await reader.ReadAsync())
             {
-                var lockData = new Lock
+                locks.Add(new Lock
                 {
                     LockId = reader.GetGuid(0),
                     LockName = reader.GetString(1),
                     LockMac = reader.GetString(2),
+                    LockSecret = reader.GetString(3),
                     UserId = reader.IsDBNull(4) ? null : reader.GetString(4),
                     Deleted = reader.GetBoolean(5)
-                };
-                reader.GetBytes(3, 0, lockData.LockSecret, 0, 128);
-                locks.Add(lockData);
+                });
             }
             return new OkObjectResult(locks);
         }

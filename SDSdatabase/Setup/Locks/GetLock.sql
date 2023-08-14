@@ -27,17 +27,17 @@ BEGIN
     SET @now = GETDATE();
 
     WITH
-    LockHourDifference
-    AS
-    (
-        SELECT
-            *,
+        LockHourDifference
+        AS
+        (
+            SELECT
+                *,
             IIF(@lockStatus = 1, DATEDIFF(MINUTE, start_time, @now) / 60, NULL) AS hour_difference
-        FROM
-            Locks
-        WHERE
+            FROM
+                Locks
+            WHERE
             id = @lock_id
-    )
+        )
     INSERT INTO @Locks
     SELECT
         @lockStatus,
