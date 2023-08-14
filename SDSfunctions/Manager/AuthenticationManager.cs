@@ -1,5 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SDS.Function
 {
@@ -8,7 +9,8 @@ namespace SDS.Function
         public static bool Authenticate(HttpRequest req)
         {
             var appUuid = req.Headers["appUuid"];
-            return appUuid == Environment.GetEnvironmentVariable("ManagerAppUuid");
+            var sid = req.Headers["sid"];
+            return appUuid == Environment.GetEnvironmentVariable("ManagerAppUuid") && sid.IsNullOrEmpty();
         }
     }
 }

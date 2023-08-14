@@ -24,6 +24,7 @@ namespace SDS.Function
             public decimal Longitude { get; set; }
             public Guid LockId { get; set; }
             public string LockName { get; set; }
+            public string UserId { get; set; }
             public decimal HourlyRate { get; set; }
             public DateTime StartTime { get; set; }
             public DateTime EndTime { get; set; }
@@ -64,12 +65,13 @@ namespace SDS.Function
                     Longitude = reader.GetDecimal(2),
                     LockId = reader.GetGuid(3),
                     LockName = reader.GetString(4),
-                    HourlyRate = reader.GetDecimal(5),
-                    StartTime = reader.GetDateTime(6),
-                    EndTime = reader.GetDateTime(7),
-                    DurationDays = reader.GetInt32(8),
-                    DurationHours = reader.GetInt32(9),
-                    Cost = reader.GetDecimal(10)
+                    UserId = reader.GetString(5),
+                    HourlyRate = reader.GetDecimal(6),
+                    StartTime = reader.GetDateTime(7),
+                    EndTime = reader.GetDateTime(8),
+                    DurationDays = reader.GetInt32(9),
+                    DurationHours = reader.GetInt32(10),
+                    Cost = reader.GetDecimal(11)
                 });
             }
             return new OkObjectResult(rentals);

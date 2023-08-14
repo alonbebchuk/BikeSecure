@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SDS.Function
 {
@@ -30,33 +31,31 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "stations")] HttpRequest req
         )
         {
-            var sid = "user_413046ae5f07424db6ba9da0c4340a24";
-            using (var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString")))
-            {
-                connection.Open();
-                var query = $"SELECT * FROM GetStations('{sid}');";
-                using (var command = new SqlCommand(query, connection))
-                {
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        var stations = new List<Station>();
-                        while (await reader.ReadAsync())
-                        {
-                            stations.Add(new Station
-                            {
-                                Name = reader.GetString(1),
-                                HourlyRate = reader.GetDecimal(2),
-                                Latitude = reader.GetDecimal(3),
-                                Longitude = reader.GetDecimal(4),
-                                LockCount = reader.GetInt32(5),
-                                FreeLockCount = reader.GetInt32(6),
-                                OwnedLockCount = reader.GetInt32(7)
-                            });
-                        }
-                        return new OkObjectResult(stations);
-                    }
-                }
+            if (!(Authentication.Authenticate(req) || AuthenticationManager.Authenticate(req))) {
+                return new BadRequestResult();
             }
+
+            var sid = req.Headers["sid"];
+            using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
+            connection.Open();
+            var query = sid.IsNullOrEmpty() ? $"SELECT * FROM GetStations(NULL);" : $"SELECT * FROM GetStations('{sid}');";
+            using var command = new SqlCommand(query, connection);
+            using var reader = await command.ExecuteReaderAsync();
+            var stations = new List<Station>();
+            while (await reader.ReadAsync())
+            {
+                stations.Add(new Station
+                {
+                    Name = reader.GetString(1),
+                    HourlyRate = reader.GetDecimal(2),
+                    Latitude = reader.GetDecimal(3),
+                    Longitude = reader.GetDecimal(4),
+                    LockCount = reader.GetInt32(5),
+                    FreeLockCount = reader.GetInt32(6),
+                    OwnedLockCount = reader.GetInt32(7)
+                });
+            }
+            return new OkObjectResult(stations);
         }
     }
 }

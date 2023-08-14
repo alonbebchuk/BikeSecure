@@ -11,6 +11,7 @@ RETURNS @CurrentRentals Table
     lock_id UNIQUEIDENTIFIER NOT NULL,
     lock_name NVARCHAR(MAX) NOT NULL,
     -- Rental Data
+    user_id NVARCHAR(MAX) NOT NULL,
     hourly_rate DECIMAL(4,2) NOT NULL,
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
@@ -46,6 +47,7 @@ BEGIN
         id,
         name,
         -- Rental Data
+        user_id,
         hourly_rate,
         start_time,
         @now,
