@@ -39,7 +39,12 @@ namespace SDS.Function
             Guid lockId
         )
         {
-            var sid = "user_413046ae5f07424db6ba9da0c4340a24";
+            if (!Authentication.Authenticate(req))
+            {
+                return new BadRequestResult();
+            }
+
+            var sid = req.Headers["sid"];
             using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
             connection.Open();
             var query = $"SELECT * FROM GetLock('{sid}', '{lockId}');";

@@ -39,6 +39,11 @@ namespace SDS.Function
             int stationId
         )
         {
+            if (!AuthenticationManager.Authenticate(req))
+            {
+                return new BadRequestResult();
+            }
+
             if (!Enum.TryParse<RentalStatuses>(status, true, out var rentalStatus))
             {
                 return new BadRequestResult();

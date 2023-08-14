@@ -23,6 +23,11 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "manage/stations/update")] HttpRequest req
         )
         {
+            if (!AuthenticationManager.Authenticate(req))
+            {
+                return new BadRequestResult();
+            }
+
             var requestBody = string.Empty;
             using (StreamReader streamReader = new(req.Body))
             {

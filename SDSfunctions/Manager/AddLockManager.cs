@@ -24,6 +24,11 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "manage/locks/add")] HttpRequest req
         )
         {
+            if (!AuthenticationManager.Authenticate(req))
+            {
+                return new BadRequestResult();
+            }
+
             var requestBody = string.Empty;
             using (var streamReader = new StreamReader(req.Body))
             {

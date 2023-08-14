@@ -30,6 +30,11 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "manage/stations")] HttpRequest req
         )
         {
+            if (!AuthenticationManager.Authenticate(req))
+            {
+                return new BadRequestResult();
+            }
+
             using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
             connection.Open();
             var query = $"SELECT * FROM GetStations(NULL);";

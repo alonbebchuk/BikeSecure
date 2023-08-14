@@ -25,6 +25,11 @@ namespace SDS.Function
             int stationId
         )
         {
+            if (!AuthenticationManager.Authenticate(req))
+            {
+                return new BadRequestResult();
+            }
+
             using var connection = new SqlConnection(Environment.GetEnvironmentVariable("SqlConnectionString"));
             connection.Open();
             var query = $"SELECT * FROM GetLocksManager({stationId});";

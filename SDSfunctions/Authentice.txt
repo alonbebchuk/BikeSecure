@@ -1,5 +1,0 @@
-// var appUuid = req.Headers["appUuid"];
-// var sid = req.Headers["sid"];
-// if (appUuid = Environment.GetEnvironmentVariable("SqlConnectionString") && string.IsNullOrEmpty(sid)) {
-//     return new BadRequestResult();
-// }

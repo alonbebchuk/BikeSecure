@@ -2,6 +2,8 @@
   "IsEncrypted": false,
   "Values": {
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "SqlConnectionString": "Server=tcp:sds-sql-server.database.windows.net,1433;Initial Catalog=SDS database;Persist Security Info=False;User ID=sds;Password=Pa$$word;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    "SqlConnectionString": "Server=tcp:sds-sql-server.database.windows.net,1433;Initial Catalog=SDS database;Persist Security Info=False;User ID=sds;Password=Pa$$word;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+    "UserAppUuid": "eb3b972e-39cb-11ee-87ed-fb7c43fcff9d",
+    "ManagerAppUuid": "9c214d18-35d0-11ee-bf49-8365c3dd3d98"
   }
 }

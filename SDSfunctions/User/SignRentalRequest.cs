@@ -43,6 +43,13 @@ namespace SDS.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "rentals/action")] HttpRequest req
         )
         {
+            if (!Authentication.Authenticate(req))
+            {
+                return new BadRequestResult();
+            }
+
+            var sid = req.Headers["sid"];
+
             var requestBody = string.Empty;
             using (var streamReader = new StreamReader(req.Body))
             {
