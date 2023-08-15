@@ -45,9 +45,3 @@ All communication is encrypted, and rental actions directed at IoT devices are d
 
 The Bike Secure app is available on mobile devices through the retool store.
 Users who have been granted permission to use the app can access it globally, offering a seamless experience across different regions.
-
-## Conclusion
-
-The Bike Secure mobile app presents a comprehensive solution for urban bike parking.
-By combining user-friendly interfaces, station locators, QR code scanning, and robust security measures, the app provides a convenient and secure platform for users to park their bikes responsibly.
-Its features promote efficient bike usage while contributing to a cleaner and more organized urban environment.
