@@ -14,6 +14,8 @@ This repository contains all the components of the Bike Secure system.
 
 ## About Bike Secure
 
+[Presentation](https://docs.google.com/presentation/d/1WYgnCWiLAWS_hh3iIgYiCZGA_hGM5Ng4/edit?usp=sharing&ouid=112755358279878743687&rtpof=true&sd=true)
+
 Bike Secure is a comprehensive solution for urban bike parking and management.
 It consists of user-friendly mobile and manager web apps that enable users to easily rent bike locks, while allowing city operators to efficiently manage lock rentals, stations, and more.
 
