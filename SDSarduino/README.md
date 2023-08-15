@@ -44,7 +44,7 @@ The Arduino responds with "Ok" for successful operations and "BadRequest" for in
 ## Usage
 
 1. Replace `SECRET_KEY` with the actual shared secret key.
-1. Upload the code to the Arduino board.
-2. Connect to the Arduino using a BLE-compatible device.
-3. Once connected, the device can send authentication responses and control requests.
-4. Follow the defined protocol for control requests ('0' to turn off - unlock, '1' to turn on - lock).
+2. Upload the code to the Arduino board.
+3. Connect to the Arduino using a BLE-compatible device.
+4. Once connected, the device can send authentication responses and control requests.
+5. Follow the defined protocol for control requests ('0' to turn off - unlock, '1' to turn on - lock).
